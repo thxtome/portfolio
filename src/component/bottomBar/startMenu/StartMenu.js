@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import StartMenuBtn from "./StartMenuBtn";
 import sidePower from "../../../svg/sidePower.svg";
@@ -77,7 +77,7 @@ function StartMenu({
             </StyledContentTitle>
             <StyledContentIconBox>
               {programs.map((program, index) => (
-                <BottomItemContainer program={program} width={"108px"} height={"108px"} type={"start"} key={index} />
+                <BottomItemContainer program={program} type={"start"} key={index} />
               ))}
             </StyledContentIconBox>
           </StyledStartMenuContent>

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import Paragraph from "../../../component/common/Paragraph";
 import DateBox from "./DateBox";
 
 const StyledCalendarContent = styled.div`
@@ -22,7 +21,7 @@ const makeDateContent = (year, month, day, isCurrentYandM) => {
   //이달의 날짜를 채움
   for (let i = firstDay; i <= lastDate + firstDay; i++) {
     let dateInfo = { date: i - firstDay + 1, isCurrentMonth: true };
-    if (isCurrentYandM && Number(day) == i - firstDay + 1) {
+    if (isCurrentYandM && Number(day) === i - firstDay + 1) {
       dateInfo.isCurrentDay = true;
     }
     dates[i] = dateInfo;

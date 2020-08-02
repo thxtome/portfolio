@@ -27,7 +27,7 @@ function Item({ program, closeBottomMenu, onclick, type, ...rest }) {
       {type !== "bottom" ? (
         <Paragraph
           text={program.text}
-          color={"black"}
+          color={type === "start" ? "black" : "white"}
           margin={"0 10px 10px 10px"}
           fontSize={"0.9rem"}
           fontWeight={"bold"}

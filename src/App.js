@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { Provider } from "react-redux";
 import store from "./store/store";
@@ -11,6 +11,7 @@ html, body {
     margin: 0;
     height:100%;
     width:100%;
+    overflow:hidden;
   }
  
   body {
@@ -20,6 +21,11 @@ html, body {
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
   }
   
   code {
@@ -43,14 +49,6 @@ const AppBlock = styled.div`
 `;
 
 function App() {
-  const [isLoading, setIsLoading] = useState(!sessionStorage.getItem("isReVisit"));
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-      sessionStorage.setItem("isReVisit", true);
-    }, 2000);
-  }, []);
-
   return (
     <Provider store={store}>
       <GlobalStyle />

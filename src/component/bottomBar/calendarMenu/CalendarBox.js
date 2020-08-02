@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Paragraph from "../../../component/common/Paragraph";
 import CalendarTitle from "./CalendarTitle";
 import CalendarContent from "./CalendarContent";
 
@@ -13,7 +12,6 @@ const StyledTimeBox = styled.div`
   align-items: flex-start;
   font-size: 2.5rem;
   background: #c4c4c4;
-
 `;
 
 const calMonth = (year, month) => {
@@ -55,7 +53,7 @@ function CalendarBox({ year, month, day }) {
         day={day}
         stYear={stYear}
         stMonth={stMonth}
-        isCurrentYandM={year == stYear && month == stMonth}
+        isCurrentYandM={year === stYear && month === stMonth}
       ></CalendarContent>
     </StyledTimeBox>
   );

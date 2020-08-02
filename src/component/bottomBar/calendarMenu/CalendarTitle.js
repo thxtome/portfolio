@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import Paragraph from "../../../component/common/Paragraph";
 import Button from "../../../component/common/Button";

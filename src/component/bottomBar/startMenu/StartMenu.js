@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import StartMenuBtn from "./StartMenuBtn";
 import sidePower from "../../../svg/sidePower.svg";
-import BottomItemContainer from "../../../container/bottomBar/BottomItemContainer";
+import ItemContainer from "../../../container/common/ItemContainer";
 import Paragraph from "../../common/Paragraph";
 
 const StyledStartMenu = styled.div`
@@ -65,11 +65,11 @@ function StartMenu({
       {isStartMenuOpend ? (
         <StyledStartMenu>
           <StyledSideMenu>
-            <BottomItemContainer
+            <ItemContainer
               program={{ icon: sidePower }}
               onclick={mountSelectPowerModal}
               type={"bottom"}
-            ></BottomItemContainer>
+            ></ItemContainer>
           </StyledSideMenu>
           <StyledStartMenuContent>
             <StyledContentTitle>
@@ -77,7 +77,7 @@ function StartMenu({
             </StyledContentTitle>
             <StyledContentIconBox>
               {programs.map((program, index) => (
-                <BottomItemContainer program={program} type={"start"} key={index} />
+                <ItemContainer program={program} type={"start"} key={index} />
               ))}
             </StyledContentIconBox>
           </StyledStartMenuContent>

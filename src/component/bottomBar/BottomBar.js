@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import BottomItemContainer from "../../container/bottomBar/BottomItemContainer";
+import ItemContainer from "../../container/common/ItemContainer";
 import StartMenuContainer from "../../container/bottomBar/startMenu/StartMenuContainer";
 import CalendarMenuContainer from "../../container/bottomBar/calendarMenu/CalendarMenuContainer";
 
@@ -35,7 +35,7 @@ function BottomBar({ programs }) {
       <StyledBottomIconBox>
         <StartMenuContainer programs={programs}></StartMenuContainer>
         {programs.map((program, index) => (
-          <BottomItemContainer program={program} type={"bottom"} key={index} />
+          <ItemContainer program={program} type={"bottom"} key={index} />
         ))}
       </StyledBottomIconBox>
       <StyledBottomCalendarBox>

@@ -6,9 +6,11 @@ import blogIcon from "../../svg/blog.svg";
 import _ from "lodash";
 
 const CHANGE_WINDOW_LOCATION = createAction("CHANGE_WINDOW_LOCATION");
+const OPEN_PROGRAM = createAction("OPEN_PROGRAM");
 
 export const programActions = {
   CHANGE_WINDOW_LOCATION,
+  OPEN_PROGRAM,
 };
 
 const initialState = {
@@ -22,6 +24,7 @@ const initialState = {
     height: "500px",
     location: { top: 100, left: 100 },
     zIndex: 0,
+    isOpen: false,
   },
   project: {
     type: "project",
@@ -33,6 +36,7 @@ const initialState = {
     height: "500px",
     location: { top: 100, left: 100 },
     zIndex: 0,
+    isOpen: false,
   },
   folder: {
     type: "folder",
@@ -44,6 +48,7 @@ const initialState = {
     height: "500px",
     location: { top: 100, left: 100 },
     zIndex: 0,
+    isOpen: false,
   },
   blog: {
     type: "blog",
@@ -55,6 +60,7 @@ const initialState = {
     height: "500px",
     location: { top: 100, left: 100 },
     zIndex: 0,
+    isOpen: false,
   },
 };
 
@@ -64,6 +70,13 @@ const reducer = createReducer(initialState, {
     const programs = { ...state };
     programs[action.payload.target] = target;
     target.location = action.payload.location;
+    return programs;
+  },
+  [OPEN_PROGRAM]: (state, action) => {
+    const target = _.cloneDeep(state[action.payload.target]);
+    const programs = { ...state };
+    programs[action.payload.target] = target;
+    target.isOpen = true;
     return programs;
   },
 });

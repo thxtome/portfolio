@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import styled from "styled-components";
 import Activation from "./Activation";
-import BottomItemContainer from "../../container/bottomBar/BottomItemContainer";
+import ItemContainer from "../../container/common/ItemContainer";
 import ProgramBox from "./ProgramBox";
 
 const StyledDesktop = styled.main`
@@ -32,11 +32,20 @@ function Desktop({ programs, changeWindowLocation }) {
   const size = useWindowSize();
   return (
     <StyledDesktop size={size}>
+      {programs.map((program, index) => {
+        if (program.isOpen) {
+          return (
+            <ProgramBox
+              size={size}
+              program={program}
+              changeWindowLocation={changeWindowLocation}
+              key={index}
+            ></ProgramBox>
+          );
+        }
+      })}
       {programs.map((program, index) => (
-        <ProgramBox size={size} program={program} changeWindowLocation={changeWindowLocation} key={index}></ProgramBox>
-      ))}
-      {programs.map((program, index) => (
-        <BottomItemContainer program={program} type={"desktop"} key={index} />
+        <ItemContainer program={program} type={"desktop"} key={index} />
       ))}
       <Activation></Activation>
     </StyledDesktop>

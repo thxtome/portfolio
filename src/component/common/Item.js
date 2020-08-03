@@ -16,8 +16,9 @@ const StyledItem = styled.div`
   flex-wrap: wrap;
 `;
 
-function Item({ program, closeBottomMenu, onclick, type, ...rest }) {
+function Item({ program, closeBottomMenu, onclick, type, openProgram, ...rest }) {
   const clickEvent = () => {
+    program.type && openProgram({ target: program.type, isOpen: true });
     closeBottomMenu();
     onclick && onclick();
   };

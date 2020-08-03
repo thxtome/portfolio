@@ -20,7 +20,7 @@ const initialState = {
     isMinimize: false,
     width: "1000px",
     height: "500px",
-    location: { top: "100px", left: "100px" },
+    location: { top: 100, left: 100 },
     zIndex: 0,
   },
   project: {
@@ -31,7 +31,7 @@ const initialState = {
     isMinimize: false,
     width: "1000px",
     height: "500px",
-    location: { top: "100px", left: "100px" },
+    location: { top: 100, left: 100 },
     zIndex: 0,
   },
   folder: {
@@ -42,27 +42,29 @@ const initialState = {
     isMinimize: false,
     width: "1000px",
     height: "500px",
-    location: { top: "100px", left: "100px" },
+    location: { top: 100, left: 100 },
     zIndex: 0,
   },
   blog: {
-    type: "bolg",
+    type: "blog",
     background: "rgb(203, 12, 242,0.3)",
     icon: blogIcon,
     text: "블로그",
     isMinimize: false,
     width: "1000px",
     height: "500px",
-    location: { top: "100px", left: "100px" },
+    location: { top: 100, left: 100 },
     zIndex: 0,
   },
 };
 
 const reducer = createReducer(initialState, {
   [CHANGE_WINDOW_LOCATION]: (state, action) => {
-    const profile = _.cloneDeep(state[action.payload.target]);
-    profile.location = action.payload.location;
-    return { ...state, profile };
+    const target = _.cloneDeep(state[action.payload.target]);
+    const programs = { ...state };
+    programs[action.payload.target] = target;
+    target.location = action.payload.location;
+    return programs;
   },
 });
 

@@ -1,7 +1,8 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import styled from "styled-components";
 import Paragraph from "../common/Paragraph";
 import Icon from "../common/Icon";
+import _ from "lodash";
 
 const StyledProgramBox = styled.div`
   position: absolute;
@@ -9,8 +10,6 @@ const StyledProgramBox = styled.div`
   height: max-content;
   min-width: 200px;
   min-height: 30px;
-  top: ${(props) => (props.top ? `${props.top}px` : "")};
-  left: ${(props) => (props.left ? `${props.left}px` : "")};
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
@@ -41,18 +40,65 @@ const StyledProgramContent = styled.div`
   background: #c4c4c4;
 `;
 
-function ProgramBox({ program, setMouseLocation, setIsDragging }) {
-  const tabRef = useRef();
+function ProgramBox({ program, size, changeWindowLocation }) {
+  const boxRef = useRef();
+  useEffect(() => {
+    if (
+      size.height < program.location.top + boxRef.current.scrollHeight + 60 ||
+      size.width < program.location.left + boxRef.current.scrollWidth
+    ) {
+      let nextTop =
+        size.height < program.location.top + boxRef.current.scrollHeight + 60
+          ? size.height - boxRef.current.scrollHeight - 60
+          : program.location.top;
+
+      let nextLeft =
+        size.width < program.location.left + boxRef.current.scrollWidth
+          ? size.width - boxRef.current.scrollWidth
+          : program.location.left;
+
+      changeWindowLocation({
+        location: {
+          top: nextTop,
+          left: nextLeft,
+        },
+        target: program.type,
+      });
+    }
+  }, [size]);
+
+  let moveX = 0;
+  let moveY = 0;
+
+  const addDragEvt = (e) => {
+    document.addEventListener("mouseup", mouseUpEvt);
+    document.addEventListener("mousemove", mouseMoveEvt);
+  };
+
+  const mouseUpEvt = () => {
+    document.removeEventListener("mouseup", mouseUpEvt);
+    document.removeEventListener("mousemove", mouseMoveEvt);
+  };
+
+  const mouseMoveEvt = (e) => {
+    let topMax = window.innerHeight - boxRef.current.scrollHeight - 60;
+    let leftMax = window.innerWidth - boxRef.current.scrollWidth;
+    moveY += e.movementY;
+    moveX += e.movementX;
+    let nextTop = program.location.top + moveY;
+    let nextLeft = program.location.left + moveX;
+    nextTop = nextTop < 0 ? 0 : nextTop > topMax ? topMax : nextTop;
+    nextLeft = nextLeft < 0 ? 0 : nextLeft > leftMax ? leftMax : nextLeft;
+    let nextLocation = { top: nextTop, left: nextLeft };
+    changeWindowLocation({ location: nextLocation, target: program.type });
+  };
+
   return (
-    <div style={{ position: "absolute", top: program.location.top + "px", left: program.location.left + "px" }}>
+    <div style={{ position: "absolute", top: program.location.top, left: program.location.left }} ref={boxRef}>
       <StyledProgramBox>
         <StyledProgramTab
           onMouseDown={(e) => {
-            setIsDragging(true);
-            setMouseLocation({ top: e.clientY, left: e.clientX });
-          }}
-          onMouseUp={(e) => {
-            setIsDragging(false);
+            addDragEvt(e);
           }}
         >
           <Icon src={program.icon}></Icon>

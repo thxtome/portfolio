@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import styled from "styled-components";
 import Paragraph from "../common/Paragraph";
+import Button from "../common/Button";
 import Icon from "../common/Icon";
 import _ from "lodash";
 
@@ -17,7 +18,7 @@ const StyledProgramBox = styled.div`
   background: #c4c4c4;
 `;
 
-const StyledProgramTab = styled.header`
+const StyledProgramHeader = styled.header`
   width: 100%;
   height: 30px;
   display: flex;
@@ -38,6 +39,30 @@ const StyledProgramContent = styled.div`
   flex-wrap: wrap;
   border-radius: 3px;
   background: #c4c4c4;
+`;
+
+const StyledProgramTitle = styled.div`
+  width: max-content;
+  height: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  border-radius: 3px;
+  background: #fff;
+  flex-grow: 1;
+`;
+
+const StyledTabResizeTab = styled.div`
+  width: 110px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-end;
+  flex-wrap: nowrap;
+  background: #c4c4c4;
+  float: right;
+  flex-basis: 0;
 `;
 
 function ProgramBox({ program, size, changeWindowLocation }) {
@@ -96,14 +121,22 @@ function ProgramBox({ program, size, changeWindowLocation }) {
   return (
     <div style={{ position: "absolute", top: program.location.top, left: program.location.left }} ref={boxRef}>
       <StyledProgramBox>
-        <StyledProgramTab
+        <StyledProgramHeader
           onMouseDown={(e) => {
             addDragEvt(e);
           }}
         >
-          <Icon src={program.icon}></Icon>
-          <Paragraph text={program.text} margin={"0 0 0 10px"} color={"black"}></Paragraph>
-        </StyledProgramTab>
+          <StyledProgramTitle>
+            <Icon src={program.icon}></Icon>
+            <Paragraph text={program.text} margin={"0 0 0 10px"} color={"black"}></Paragraph>
+          </StyledProgramTitle>
+
+          <StyledTabResizeTab>
+            <Button text={"ㅡ"}></Button>
+            <Button text={"ㅁ"}></Button>
+            <Button text={"X"}></Button>
+          </StyledTabResizeTab>
+        </StyledProgramHeader>
         <StyledProgramContent></StyledProgramContent>
       </StyledProgramBox>
     </div>

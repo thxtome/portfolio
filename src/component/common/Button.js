@@ -11,7 +11,8 @@ const StyledButton = styled.button`
   background: ${(props) => (props.background ? props.background : "none")};
   border: ${(props) => (props.border ? props.border : "none")};
   transform: ${(props) => (props.transform ? props.transform : "none")};
-  border-radius: 4px;
+  border-radius: ${(props) => (props.borderRadius ? props.borderRadius : "none")};
+  letter-spacing: ${(props) => (props.letterSpacing ? props.letterSpacing : "")};
   &:focus {
     border: none;
     border-image-width: 0px;
@@ -19,9 +20,11 @@ const StyledButton = styled.button`
     outline-radius: 4px;
     outline-style: ${(props) => (props.outline ? "auto" : "none")};
   }
-
   &:active {
     color: #999;
+  }
+  &:hover {
+    background: ${(props) => (props.hover ? props.hover : "none")};
   }
 `;
 

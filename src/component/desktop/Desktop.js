@@ -28,10 +28,20 @@ function useWindowSize() {
   return size;
 }
 
-function Desktop({ programs, changeWindowLocation }) {
+function Desktop({
+  programs,
+  changeWindowLocation,
+  minimizeWindow,
+  changeWindowSize,
+  maximizeWindow,
+  releaseMaximizeWindow,
+  closeProgram,
+  focusOnWindow,
+  closeBottomMenu,
+}) {
   const size = useWindowSize();
   return (
-    <StyledDesktop size={size}>
+    <StyledDesktop size={size} onClick={closeBottomMenu}>
       {programs.map((program, index) => {
         if (program.isOpen) {
           return (
@@ -39,6 +49,12 @@ function Desktop({ programs, changeWindowLocation }) {
               size={size}
               program={program}
               changeWindowLocation={changeWindowLocation}
+              minimizeWindow={minimizeWindow}
+              changeWindowSize={changeWindowSize}
+              maximizeWindow={maximizeWindow}
+              releaseMaximizeWindow={releaseMaximizeWindow}
+              closeProgram={closeProgram}
+              focusOnWindow={focusOnWindow}
               key={index}
             ></ProgramBox>
           );

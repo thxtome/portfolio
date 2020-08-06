@@ -8,12 +8,18 @@ const StyledItem = styled.div`
   height: ${(props) => (props.type === "bottom" ? "60px" : props.type === "start" ? "108px" : "120px")};
   display: flex;
   justify-content: center;
-  align-items: ${(props) => (props.type === "start" ? "flex-end" : "center")};
+  align-items: ${(props) => (props.type === "start" ? "flex-end" : "flex-start")};
   background: ${(props) => (props.type === "start" ? props.background : "none")};
+  margin-top: ${(props) => (props.type === "start" ? "0" : "5px")};
   &:hover {
     background: #ddd;
   }
   flex-wrap: wrap;
+`;
+const StyledItemOpenBar = styled.div`
+  width: 80%;
+  height: 5px;
+  background: #2b7cff;
 `;
 
 function Item({ program, closeBottomMenu, onclick, type, openProgram, ...rest }) {
@@ -33,6 +39,8 @@ function Item({ program, closeBottomMenu, onclick, type, openProgram, ...rest })
           fontSize={"0.9rem"}
           fontWeight={"bold"}
         />
+      ) : program.isOpen ? (
+        <StyledItemOpenBar />
       ) : (
         ""
       )}

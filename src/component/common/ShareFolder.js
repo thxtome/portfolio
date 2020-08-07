@@ -6,8 +6,8 @@ const StyledShareFolder = styled.div`
   height: 100%;
 `;
 
-function ShareFolder() {
+const ShareFolder = () => {
   return <StyledShareFolder></StyledShareFolder>;
-}
+};
 
 export default ShareFolder;

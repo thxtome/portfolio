@@ -10,6 +10,7 @@ const StyledPowerScreen = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
+  z-index: 10000000;
 `;
 
 const renderSwitch = (powerState, unmountPowerScreen, changePowerState) => {
@@ -36,7 +37,6 @@ const renderSwitch = (powerState, unmountPowerScreen, changePowerState) => {
 
 function PowerScreen({ isRequiredPowerScreen, powerState, unmountPowerScreen, changePowerState }) {
   useEffect(() => {}, [powerState]);
-  console.log(powerState);
   return (
     <>
       {isRequiredPowerScreen ? (

@@ -39,7 +39,7 @@ const StyledModalContentTitle = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   height: 60px;
-  margin-bottom: 15px;
+  margin: 10px 0 15px 0;
 `;
 
 const StyledModalSelectBox = styled.div`
@@ -84,7 +84,7 @@ function SelectModal({ changePowerState, unmountPowerScreen }) {
       <StyledModalContent>
         <StyledModalContentTitle>
           <Paragraph text={"Portfolio"} fontSize={"2.2rem"} color={"blue"}></Paragraph>
-          <Paragraph text={"startMan edition"} fontSize={"1.05rem"} color={"black"} margin={"0 0 5px 10px"}></Paragraph>
+          <Paragraph text={"startMan edition"} fontSize={"0.9rem"} color={"black"} margin={"0 0 7px 10px"}></Paragraph>
         </StyledModalContentTitle>
         <StyledModalSelectBox>
           <Paragraph text={"원하는 작업을 선택하십시오."} color={"black"} fontSize={"0.8rem"}></Paragraph>

@@ -2,23 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledImg = styled.img`
-  width: ${(props) =>
-    props.type === "bottom" ? "40px" : props.type === "start" ? "50px" : props.type === "desktop" ? "60px" : "20px"};
-  height: ${(props) =>
-    props.type === "bottom" ? "40px" : props.type === "start" ? "50px" : props.type === "desktop" ? "60px" : "20px"};
+  width: ${(props) => (props.width ? `${props.width}px` : "60px")};
+  height: ${(props) => (props.height ? `${props.height}px` : "60px")};
 `;
 
-function Icon({ src, closeBottomMenu, ...rest }) {
-  return (
-    <StyledImg
-      {...rest}
-      src={src}
-      onClick={closeBottomMenu}
-      onDragStart={(e) => {
-        e.preventDefault();
-      }}
-    />
-  );
-}
+const Icon = ({ src, ...rest }) => {
+  return <StyledImg {...rest} src={src} />;
+};
 
 export default Icon;

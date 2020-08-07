@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
   const { profile, project, folder, blog } = state.programReducer;
-  return { programs: [profile, project, folder, blog] };
+  return { programs: [profile, project, blog, folder] };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -16,6 +16,10 @@ const mapDispatchToProps = (dispatch) => {
 
     closeProgram: ({ target }) => {
       dispatch(programActions.CLOSE_PROGRAM({ target }));
+    },
+
+    openWindow: ({ target }) => {
+      dispatch(programActions.OPEN_PROGRAM({ target }));
     },
 
     changeWindowLocation: ({ location, target }) => {
@@ -33,9 +37,11 @@ const mapDispatchToProps = (dispatch) => {
     maximizeWindow: ({ target }) => {
       dispatch(programActions.MAXIMIZE_PROGRAM({ target }));
     },
+
     releaseMaximizeWindow: ({ target }) => {
       dispatch(programActions.RELEASE_MAXIMIZE_PROGRAM({ target }));
     },
+
     focusOnWindow: ({ target }) => {
       dispatch(programActions.FOCUS_ON_WINDOW({ target }));
     },

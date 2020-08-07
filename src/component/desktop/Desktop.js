@@ -1,12 +1,12 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import styled from "styled-components";
 import Activation from "./Activation";
-import ItemContainer from "../../container/common/ItemContainer";
+import DesktopItem from "./DesktopItem";
 import ProgramBox from "./ProgramBox";
 
 const StyledDesktop = styled.main`
 width: 100%;
-height: ${(props) => (props.size ? `${props.size.height - 60}px` : "100%")};
+height: ${(props) => (props.windowSize ? `${props.windowSize.height - 60}px` : "100%")};
 background: black;
 display: grid;
 grid-template: repeat(auto-fill, 120px) / repeat(auto-fill, 120px);
@@ -15,18 +15,18 @@ padding 3px;
 box-sizing: border-box;
 `;
 
-function useWindowSize() {
-  const [size, setSize] = useState([0, 0]);
+const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState([0, 0]);
   useLayoutEffect(() => {
     function updateSize() {
-      setSize({ width: window.innerWidth, height: window.innerHeight });
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     }
     window.addEventListener("resize", updateSize);
     updateSize();
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-  return size;
-}
+  return windowSize;
+};
 
 function Desktop({
   programs,
@@ -38,15 +38,16 @@ function Desktop({
   closeProgram,
   focusOnWindow,
   closeBottomMenu,
+  openWindow,
 }) {
-  const size = useWindowSize();
+  const windowSize = useWindowSize();
   return (
-    <StyledDesktop size={size} onClick={closeBottomMenu}>
+    <StyledDesktop windowSize={windowSize} onClick={closeBottomMenu}>
       {programs.map((program, index) => {
         if (program.isOpen) {
           return (
             <ProgramBox
-              size={size}
+              windowSize={windowSize}
               program={program}
               changeWindowLocation={changeWindowLocation}
               minimizeWindow={minimizeWindow}
@@ -61,7 +62,19 @@ function Desktop({
         }
       })}
       {programs.map((program, index) => (
-        <ItemContainer program={program} type={"desktop"} key={index} />
+        <DesktopItem
+          program={program}
+          onclick={closeBottomMenu}
+          ondoubleclick={() => {
+            openWindow({ target: program.type });
+          }}
+          onkeydown={(e) => {
+            if (e.keyCode == 13) {
+              openWindow({ target: program.type });
+            }
+          }}
+          key={index}
+        />
       ))}
       <Activation></Activation>
     </StyledDesktop>

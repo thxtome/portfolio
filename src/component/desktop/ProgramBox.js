@@ -35,8 +35,6 @@ const StyledProgramContent = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  border-radius: 3px;
-  overflow: auto;
 `;
 
 const StyledProgramTitle = styled.div`
@@ -63,9 +61,9 @@ const StyledTabResizeTab = styled.div`
   flex-basis: 0;
 `;
 
-function ProgramBox({
-  program,
-  size,
+const ProgramBox = ({
+  program: { type, icon, text, isMinimized, isMaximized, size, location, zIndex, Content },
+  windowSize,
   changeWindowLocation,
   minimizeWindow,
   changeWindowSize,
@@ -73,50 +71,50 @@ function ProgramBox({
   releaseMaximizeWindow,
   closeProgram,
   focusOnWindow,
-}) {
+}) => {
   const boxRef = useRef();
   const [resizeMode, setResizeMode] = useState("default");
   const changeLocationWhenWindowResize = () => {
     if (
-      size.height < program.location.top + boxRef.current.scrollHeight + 60 ||
-      size.width < program.location.left + boxRef.current.scrollWidth
+      windowSize.height < location.top + boxRef.current.scrollHeight + 60 ||
+      windowSize.width < location.left + boxRef.current.scrollWidth
     ) {
-      let restTop = size.height - boxRef.current.scrollHeight - 60;
-      let nextTop = restTop < 0 ? 0 : restTop < program.location.top ? restTop : program.location.top;
+      let restTop = windowSize.height - boxRef.current.scrollHeight - 60;
+      let nextTop = restTop < 0 ? 0 : restTop < location.top ? restTop : location.top;
 
-      let restLeft = size.width - boxRef.current.scrollWidth;
-      let nextLeft = restLeft < 0 ? 0 : restLeft < program.location.left ? restLeft : program.location.left;
+      let restLeft = windowSize.width - boxRef.current.scrollWidth;
+      let nextLeft = restLeft < 0 ? 0 : restLeft < location.left ? restLeft : location.left;
 
       changeWindowLocation({
         location: {
           top: nextTop,
           left: nextLeft,
         },
-        target: program.type,
+        target: type,
       });
     }
   };
 
   const changeSizeWhenWindowResize = () => {
-    if (program.isMaximized) {
+    if (isMaximized) {
       changeWindowSize({
         size: {
-          height: size.height - 60,
-          width: size.width,
+          height: windowSize.height - 60,
+          width: windowSize.width,
         },
-        target: program.type,
+        target: type,
       });
     }
 
-    if (size.height < program.size.height + 60 || size.width < program.size.width) {
-      let nextHeight = size.height < program.size.height + 60 ? size.height - 60 : program.size.height;
-      let nextWidth = size.width < program.size.width ? size.width : program.size.width;
+    if (windowSize.height < size.height + 60 || windowSize.width < size.width) {
+      let nextHeight = windowSize.height < size.height + 60 ? windowSize.height - 60 : size.height;
+      let nextWidth = windowSize.width < size.width ? windowSize.width : size.width;
       changeWindowSize({
         size: {
           height: nextHeight,
           width: nextWidth,
         },
-        target: program.type,
+        target: type,
       });
     }
   };
@@ -124,16 +122,16 @@ function ProgramBox({
   useEffect(() => {
     changeSizeWhenWindowResize();
     changeLocationWhenWindowResize();
-  }, [size]);
+  }, [windowSize]);
 
   useEffect(() => {
-    if (program.isMaximized) {
+    if (isMaximized) {
       changeWindowSize({
         size: {
-          height: size.height - 60,
-          width: size.width,
+          height: windowSize.height - 60,
+          width: windowSize.width,
         },
-        target: program.type,
+        target: type,
       });
 
       changeWindowLocation({
@@ -141,10 +139,10 @@ function ProgramBox({
           top: 0,
           left: 0,
         },
-        target: program.type,
+        target: type,
       });
     }
-  }, [program.isMaximized, program.isMinimized]);
+  }, [isMaximized, isMinimized]);
 
   let moveX = 0;
   let moveY = 0;
@@ -164,12 +162,12 @@ function ProgramBox({
     let leftMax = window.innerWidth - boxRef.current.scrollWidth;
     moveY += e.movementY;
     moveX += e.movementX;
-    let nextTop = program.location.top + moveY;
-    let nextLeft = program.location.left + moveX;
+    let nextTop = location.top + moveY;
+    let nextLeft = location.left + moveX;
     nextTop = nextTop < -5 ? -5 : nextTop > topMax ? topMax : nextTop;
     nextLeft = nextLeft < -5 ? -5 : nextLeft > leftMax ? leftMax : nextLeft;
     let nextLocation = { top: nextTop, left: nextLeft };
-    changeWindowLocation({ location: nextLocation, target: program.type });
+    changeWindowLocation({ location: nextLocation, target: type });
   };
 
   const addResizeEvt = (e) => {
@@ -185,111 +183,174 @@ function ProgramBox({
   const resizeEvt = (e) => {
     let tempMoveX = e.movementX;
     let tempMoveY = e.movementY;
-    console.log(tempMoveX, tempMoveY);
+
     switch (resizeMode) {
       case "ew-resize":
         tempMoveY = 0;
         tempMoveX *= -1;
         break;
+
+      case "sw-resize":
+        tempMoveX *= -1;
+        break;
+
       case "e-resize":
         tempMoveY = 0;
         break;
+
       case "n-resize":
         tempMoveX = 0;
         tempMoveY *= -1;
         break;
+
+      case "nw-resize":
+        tempMoveY *= -1;
+        tempMoveX *= -1;
+        break;
+
+      case "ne-resize":
+        tempMoveY *= -1;
+        break;
+
       case "ns-resize":
         tempMoveX = 0;
         break;
 
+      //se-resize
       default:
         break;
     }
-    console.log(tempMoveX, tempMoveY);
 
     moveY += tempMoveY;
     moveX += tempMoveX;
 
     let nextHeight =
-      program.size.height + moveY < 30
+      size.height + moveY < 30
         ? 30
-        : program.size.height + moveY > size.height - 60
-        ? size.height - 60
-        : program.size.height + moveY;
+        : size.height + moveY > windowSize.height - 60
+        ? windowSize.height - 60
+        : size.height + moveY;
 
     let nextWidth =
-      program.size.width + moveX < 200
-        ? 200
-        : program.size.width + moveX > size.width
-        ? size.width
-        : program.size.width + moveX;
+      size.width + moveX < 200 ? 200 : size.width + moveX > windowSize.width ? windowSize.width : size.width + moveX;
 
     changeWindowSize({
       size: {
         height: nextHeight,
         width: nextWidth,
       },
-      target: program.type,
+      target: type,
     });
+
+    let top = location.top;
+    let left = location.left;
+    let minLeft = location.left + size.width - 200;
+    let minHeight = location.top + size.height - 30;
 
     switch (resizeMode) {
       case "ew-resize":
+      case "sw-resize":
+        console.log(location.left - moveX);
         changeWindowLocation({
           location: {
-            top: program.location.top,
-            left: program.location.left - moveX,
+            top,
+            left: left - moveX < minLeft ? left - moveX : minLeft,
           },
-          target: program.type,
+          target: type,
         });
-
         break;
+
       case "n-resize":
         changeWindowLocation({
           location: {
-            top: program.location.top - moveY,
-            left: program.location.left,
+            top: top - moveY < minHeight ? top - moveY : minHeight,
+            left,
           },
-          target: program.type,
+          target: type,
         });
-
         break;
 
+      case "nw-resize":
+        changeWindowLocation({
+          location: {
+            top: top - moveY < minHeight ? top - moveY : minHeight,
+            left: left - moveX < minLeft ? left - moveX : minLeft,
+          },
+          target: type,
+        });
+        break;
+
+      case "ne-resize":
+        changeWindowLocation({
+          location: {
+            top: top - moveY < minHeight ? top - moveY : minHeight,
+            left,
+          },
+          target: type,
+        });
+        break;
+
+      //se-resize
       default:
         break;
     }
   };
 
   const changeResizeMode = (e) => {
-    let x = e.clientX - program.location.left;
-    let y = e.clientY - program.location.top;
+    let left = false;
+    let right = false;
+    let up = false;
+    let down = false;
+    let resizeType = null;
+
+    let x = e.clientX - location.left;
+    let y = e.clientY - location.top;
     if (x >= 0 && x < 5) {
-      setResizeMode("ew-resize");
-    } else if (x > program.size.width + 5 && x < program.size.width + 10) {
-      setResizeMode("e-resize");
-    } else if (y >= 0 && y < 5) {
-      setResizeMode("n-resize");
-    } else if (y > program.size.height + 5 && y < program.size.height + 10) {
-      setResizeMode("ns-resize");
+      resizeType = "ew-resize";
+      left = true;
+    } else if (x > size.width + 5 && x < size.width + 10) {
+      resizeType = "e-resize";
+      right = true;
     }
+
+    if (y >= 0 && y < 5) {
+      resizeType = "n-resize";
+      up = true;
+    } else if (y > size.height + 5 && y < size.height + 10) {
+      resizeType = "ns-resize";
+      down = true;
+    }
+
+    if (left && up) {
+      resizeType = "nw-resize";
+    } else if (left && down) {
+      resizeType = "sw-resize";
+    } else if (right && up) {
+      resizeType = "ne-resize";
+    } else if (right && down) {
+      resizeType = "se-resize";
+    }
+
+    setResizeMode(resizeType);
   };
 
   return (
     <div
       style={{
         position: "absolute",
-        top: program.location.top,
-        left: program.location.left,
-        width: program.size.width,
-        height: program.size.height,
+        top: location.top,
+        left: location.left,
+        width: size.width,
+        height: size.height,
         minWidth: "200px",
         minHeight: "30px",
-        border: program.isMaximized ? "none" : "5px solid rgba(0, 0, 0, 0)",
-        display: program.isMinimized ? "none" : "flex",
+        border: isMaximized ? "none" : "5px solid rgba(0, 0, 0, 0)",
+        display: isMinimized ? "none" : "flex",
         justifyContent: "center",
         alignItems: "center",
         cursor: resizeMode,
-        transition: program.isMaximized ? "0.5s" : "none",
-        zIndex: program.zIndex,
+        transition: isMaximized ? "0.5s" : "none",
+        zIndex: zIndex,
       }}
       ref={boxRef}
       onMouseEnter={(e) => {
@@ -299,7 +360,7 @@ function ProgramBox({
         setResizeMode("default");
       }}
       onMouseDown={() => {
-        focusOnWindow({ target: program.type });
+        focusOnWindow({ target: type });
         if (resizeMode === "default") {
           return;
         }
@@ -319,9 +380,16 @@ function ProgramBox({
             onMouseDown={(e) => {
               addDragEvt(e);
             }}
+            onDoubleClick={() => {
+              if (isMaximized) {
+                releaseMaximizeWindow({ target: type });
+              } else {
+                maximizeWindow({ target: type });
+              }
+            }}
           >
-            <Icon src={program.icon}></Icon>
-            <Paragraph text={program.text} margin={"0 0 0 10px"} color={"black"}></Paragraph>
+            <Icon src={icon} width={15} height={15}></Icon>
+            <Paragraph text={text} margin={"0 0 0 10px"} color={"black"}></Paragraph>
           </StyledProgramTitle>
 
           <StyledTabResizeTab>
@@ -330,17 +398,17 @@ function ProgramBox({
               color={"black"}
               hover={"#999"}
               onclick={() => {
-                minimizeWindow({ target: program.type });
+                minimizeWindow({ target: type });
               }}
             ></Button>
-            {program.isMaximized ? (
+            {isMaximized ? (
               <Button
                 text={`\u29C9`}
                 color={"black"}
                 hover={"#999"}
                 letterSpacing={"0.1px"}
                 onclick={() => {
-                  releaseMaximizeWindow({ target: program.type });
+                  releaseMaximizeWindow({ target: type });
                 }}
               ></Button>
             ) : (
@@ -349,7 +417,7 @@ function ProgramBox({
                 color={"black"}
                 hover={"#999"}
                 onclick={() => {
-                  maximizeWindow({ target: program.type });
+                  maximizeWindow({ target: type });
                 }}
               ></Button>
             )}
@@ -359,17 +427,17 @@ function ProgramBox({
               color={"black"}
               hover={"#fe2d2d"}
               onclick={() => {
-                closeProgram({ target: program.type });
+                closeProgram({ target: type });
               }}
             ></Button>
           </StyledTabResizeTab>
         </StyledProgramHeader>
         <StyledProgramContent>
-          <program.content padding={program.isMaximized ? "none" : "30px;"}></program.content>
+          <Content padding={isMaximized ? "none" : "30px;"}></Content>
         </StyledProgramContent>
       </StyledProgramBox>
     </div>
   );
-}
+};
 
 export default ProgramBox;

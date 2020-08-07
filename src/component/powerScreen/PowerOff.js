@@ -14,7 +14,6 @@ const StyledPowerOff = styled.div`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  z-index: 1000000;
 `;
 
 const StyledTrunOnBtn = styled.img`

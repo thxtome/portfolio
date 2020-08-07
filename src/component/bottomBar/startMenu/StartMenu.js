@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import StartMenuBtn from "./StartMenuBtn";
+import StartMenuItem from "./StartMenuItem";
 import sidePower from "../../../svg/sidePower.svg";
-import ItemContainer from "../../../container/common/ItemContainer";
+import startMenuIcon from "../../../svg/menu.svg";
 import Paragraph from "../../common/Paragraph";
+import BottomBarItem from "../BottomBarItem";
 
 const StyledStartMenu = styled.div`
   position: absolute;
@@ -54,22 +55,24 @@ const StyledContentIconBox = styled.div`
 
 function StartMenu({
   isStartMenuOpend,
-  openStartMenu,
-  closeStartMenu,
+  closeBottomMenu,
   toggleStartMenu,
   mountSelectPowerModal,
   programs,
+  openWindow,
 }) {
   return (
     <>
       {isStartMenuOpend ? (
         <StyledStartMenu>
           <StyledSideMenu>
-            <ItemContainer
+            <BottomBarItem
               program={{ icon: sidePower }}
-              onclick={mountSelectPowerModal}
-              type={"bottom"}
-            ></ItemContainer>
+              onclick={() => {
+                closeBottomMenu();
+                mountSelectPowerModal();
+              }}
+            ></BottomBarItem>
           </StyledSideMenu>
           <StyledStartMenuContent>
             <StyledContentTitle>
@@ -77,7 +80,14 @@ function StartMenu({
             </StyledContentTitle>
             <StyledContentIconBox>
               {programs.map((program, index) => (
-                <ItemContainer program={program} type={"start"} key={index} />
+                <StartMenuItem
+                  program={program}
+                  onclick={() => {
+                    closeBottomMenu();
+                    openWindow({ target: program.type });
+                  }}
+                  key={index}
+                ></StartMenuItem>
               ))}
             </StyledContentIconBox>
           </StyledStartMenuContent>
@@ -85,7 +95,7 @@ function StartMenu({
       ) : (
         ""
       )}
-      <StartMenuBtn onclick={toggleStartMenu}></StartMenuBtn>
+      <BottomBarItem program={{ icon: startMenuIcon }} onclick={toggleStartMenu}></BottomBarItem>
     </>
   );
 }

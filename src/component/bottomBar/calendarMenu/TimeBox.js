@@ -38,7 +38,7 @@ function TimeBox({ onclick, dateTimeFormat, datestamp }) {
     <StyledTimeBox onClick={onclick}>
       <StyledDateTime>
         <Paragraph color={"black"} fontSize={"2rem"} text={timestamp}></Paragraph>
-        <Paragraph color={"black"} fontSize={"1rem"} text={datestamp}></Paragraph>
+        <Paragraph color={"black"} fontSize={"0.8rem"} margin={"10px 0 0 0"} text={datestamp}></Paragraph>
       </StyledDateTime>
     </StyledTimeBox>
   );

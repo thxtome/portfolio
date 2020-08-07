@@ -1,6 +1,7 @@
 import StartMenu from "../../../component/bottomBar/startMenu/StartMenu";
 import { toggleMenuActions } from "../../../store/module/toggleMenu";
 import { powerActions } from "../../../store/module/power";
+import { programActions } from "../../../store/module/program";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
@@ -21,6 +22,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     mountSelectPowerModal: () => {
       dispatch(powerActions.SELECT_POWER());
+    },
+    closeBottomMenu: () => {
+      dispatch(toggleMenuActions.CLOSE_ALL_MENU());
+    },
+    openWindow: ({ target }) => {
+      dispatch(programActions.OPEN_PROGRAM({ target }));
     },
   };
 };

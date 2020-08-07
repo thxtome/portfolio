@@ -9,10 +9,11 @@ const StyledParagraph = styled.p`
   color: ${(props) => (props.color ? props.color : "white")};
   font-size: ${(props) => (props.fontSize ? props.fontSize : "1rem")};
   font-weight: ${(props) => (props.fontWeight ? props.fontWeight : "500")};
+  font-family: inherit;
 `;
 
-function Paragraph({ text, ...rest }) {
+const Paragraph = ({ text, ...rest }) => {
   return <StyledParagraph {...rest}>{text ? text : "사용자 화면 구성중"}</StyledParagraph>;
-}
+};
 
 export default Paragraph;

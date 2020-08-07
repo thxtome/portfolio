@@ -28,12 +28,12 @@ const StyledButton = styled.button`
   }
 `;
 
-function Button({ text, onclick, ...rest }) {
+const Button = ({ text, onclick, ...rest }) => {
   return (
     <StyledButton {...rest} onClick={onclick ? onclick : () => {}}>
       {text ? text : " "}
     </StyledButton>
   );
-}
+};
 
 export default Button;

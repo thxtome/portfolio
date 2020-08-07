@@ -40,9 +40,10 @@ const initialState = {
     size: { width: 384, height: 400 },
     prevSize: { width: 200, height: 300 },
     location: { top: 100, left: 100 },
+    prevLocation: { width: 100, height: 100 },
     zIndex: 100,
     isOpen: false,
-    content: Profile,
+    Content: Profile,
   },
   project: {
     type: "project",
@@ -54,23 +55,10 @@ const initialState = {
     size: { width: 384, height: 400 },
     prevSize: { width: 200, height: 300 },
     location: { top: 100, left: 100 },
+    prevLocation: { width: 100, height: 100 },
     zIndex: 100,
     isOpen: false,
-    content: Project,
-  },
-  folder: {
-    type: "folder",
-    icon: folderIcon,
-    background: "rgb(0, 214, 200, 0.3)",
-    text: "공유폴더",
-    isMinimized: false,
-    isMaximized: false,
-    size: { width: 384, height: 400 },
-    prevSize: { width: 200, height: 300 },
-    location: { top: 100, left: 100 },
-    zIndex: 100,
-    isOpen: false,
-    content: ShareFolder,
+    Content: Project,
   },
   blog: {
     type: "blog",
@@ -82,9 +70,25 @@ const initialState = {
     size: { width: 384, height: 400 },
     prevSize: { width: 200, height: 300 },
     location: { top: 100, left: 100 },
+    prevLocation: { width: 100, height: 100 },
     zIndex: 100,
     isOpen: false,
-    content: Blog,
+    Content: Blog,
+  },
+  folder: {
+    type: "folder",
+    icon: folderIcon,
+    background: "rgb(0, 214, 200, 0.3)",
+    text: "공유폴더",
+    isMinimized: false,
+    isMaximized: false,
+    size: { width: 384, height: 400 },
+    prevSize: { width: 200, height: 300 },
+    location: { top: 100, left: 100 },
+    prevLocation: { width: 100, height: 100 },
+    zIndex: 100,
+    isOpen: false,
+    Content: ShareFolder,
   },
   maxZindex: 100,
 };
@@ -131,7 +135,7 @@ const reducer = createReducer(initialState, {
     programs[action.payload.target] = target;
     target.isMaximized = true;
     target.prevSize = { ...target.size };
-    console.log(target.prevSize);
+    target.prevLocation = { ...target.location };
     return programs;
   },
 
@@ -141,6 +145,7 @@ const reducer = createReducer(initialState, {
     programs[action.payload.target] = target;
     target.isMaximized = false;
     target.size = { ...target.prevSize };
+    target.location = { ...target.prevLocation };
     return programs;
   },
 

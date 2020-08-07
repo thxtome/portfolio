@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import ItemContainer from "../../container/common/ItemContainer";
 import StartMenuContainer from "../../container/bottomBar/startMenu/StartMenuContainer";
 import CalendarMenuContainer from "../../container/bottomBar/calendarMenu/CalendarMenuContainer";
+import BottomBarItem from "./BottomBarItem";
 
 const StyledBottomBar = styled.footer`
   position: fixed;
@@ -13,6 +13,7 @@ const StyledBottomBar = styled.footer`
   display: flex;
   justify-content: space-between;
   min-width: 450px;
+  z-index: 1000000;
 `;
 
 const StyledBottomIconBox = styled.div`
@@ -29,13 +30,20 @@ const StyledBottomCalendarBox = styled.div`
   display: flex;
 `;
 
-function BottomBar({ programs }) {
+function BottomBar({ programs, closeBottomMenu, openWindow }) {
   return (
     <StyledBottomBar>
       <StyledBottomIconBox>
         <StartMenuContainer programs={programs}></StartMenuContainer>
         {programs.map((program, index) => (
-          <ItemContainer program={program} type={"bottom"} key={index} />
+          <BottomBarItem
+            program={program}
+            onclick={() => {
+              closeBottomMenu();
+              openWindow({ target: program.type });
+            }}
+            key={index}
+          />
         ))}
       </StyledBottomIconBox>
       <StyledBottomCalendarBox>

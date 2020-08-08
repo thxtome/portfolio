@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ContentFooter from "./ContentFooter";
 import ContentHeader from "./ContentHeader";
@@ -16,11 +16,10 @@ const StyledProfile = styled.div`
 const StyledProfileContent = styled.div`
   width: 90%;
   max-width: 1120px;
-  height: 100%;
+  height: max-content%;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  overflow: auto;
   position: relative;
   top: -50px;
   background: #fff;
@@ -33,6 +32,7 @@ const StyledContentSection = styled.section`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  padding: ${(props) => (props.isMobile ? "30px 0 0 10px" : "30px 0 0 30px")};
 `;
 
 const StyledSectionTitle = styled.title`
@@ -43,7 +43,6 @@ const StyledSectionTitle = styled.title`
   display: flex;
   justify-content: flex-start;
   box-sizing: border-box;
-  padding: 30px 0 0 30px;
 `;
 
 const StyledArticle = styled.article`
@@ -52,42 +51,83 @@ const StyledArticle = styled.article`
   height: max-content;
   display: flex;
   box-sizing: border-box;
-  padding: 30px;
+  padding: ${(props) => (props.isMobile ? "30px 0 0 10px" : "30px 0 0 30px")};
   justify-content: flex-start;
   flex-wrap: wrap;
 `;
 
-const Profile = () => {
+const StyledArticleContentBox = styled.article`
+  width: ${(props) => (props.width ? props.width : "50%")};
+  height: max-content;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  min-width: 240px;
+`;
+
+const Profile = ({ isMobile }) => {
   const contents = ["WHO AM I", "SKILLS", "CONTACT"];
   return (
     <StyledProfile>
-      <ContentHeader text={"PROFILE"} contents={contents}></ContentHeader>
+      <ContentHeader text={"PROFILE"} contents={contents} isMobile={isMobile}></ContentHeader>
       <StyledProfileContent>
-        <StyledContentSection>
+        <StyledContentSection isMobile={isMobile}>
           <StyledSectionTitle>
             <Paragraph text={"WHO AM I"} color={"black"} fontSize={"1.6rem"}></Paragraph>
           </StyledSectionTitle>
-          <StyledArticle>
-            <Paragraph
-              text={"만드는 걸 좋아하는 93년에 빌드된 대한민국 평범한 남자입니다."}
-              color={"black"}
-              fontSize={"1rem"}
-            ></Paragraph>
-            <Paragraph
-              text={"평범한 직장에서 엑셀 VBA로 매크로를 만들다 개발의 매력에 푹 빠졌습니다."}
-              color={"black"}
-              fontSize={"1rem"}
-            ></Paragraph>
-            <Paragraph
-              text={"새로운 기술을 배우는 걸 좋아하고 배운걸 써먹는 건 더 좋아합니다."}
-              color={"black"}
-              fontSize={"1rem"}
-            ></Paragraph>
-            <Paragraph
-              text={"새로운 기술을 배우는 걸 좋아하고 배운걸 써먹는 건 더 좋아합니다."}
-              color={"black"}
-              fontSize={"1rem"}
-            ></Paragraph>
+          <StyledArticle isMobile={isMobile}>
+            <StyledArticleContentBox width={"50%;"}></StyledArticleContentBox>
+            <StyledArticleContentBox width={"50%;"}>
+              <Paragraph
+                text={"평범한 직장에서 엑셀 매크로를 만들다 개발의 매력에 푹 빠졌습니다."}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"6개월의 단기 국비 자바과정을 통해 개발에 입문했고, "}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"현재는 프론트엔드, 백엔드 모두 관심을 두고 있습니다."}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"밤새 이것 저것 배우고 만져보는 걸 좋아하고 "}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"배운것으로 무언가 만드는 건 더 좋아합니다."}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"저는 유쾌하고 깔끔한 성향의 사람이고 코드 역시 이런 성향을 추구합니다."}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"주변에서 많이 배우고 또 배운 것을 나눠주는 사람이 되려고 노력합니다."}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+              <Paragraph
+                text={"와주신 분들도 제 주변인이 되어주셨으면 합니다. 감사합니다"}
+                color={"black"}
+                fontSize={"1rem"}
+                margin={"0 0 10px 0"}
+              ></Paragraph>
+            </StyledArticleContentBox>
           </StyledArticle>
         </StyledContentSection>
       </StyledProfileContent>

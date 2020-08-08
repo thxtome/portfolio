@@ -5,8 +5,8 @@ import { programActions } from "../../store/module/program";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
-  const { profile, project, folder, blog } = state.programReducer;
-  return { programs: [profile, project, blog, folder] };
+  const { profile, project, blog, guestBook } = state.programReducer;
+  return { programs: [profile, project, blog, guestBook] };
 };
 
 const mapDispatchToProps = (dispatch) => {

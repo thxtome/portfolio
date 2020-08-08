@@ -7,7 +7,7 @@ import _ from "lodash";
 import Blog from "../../component/common/Blog";
 import Profile from "../../component/common/Profile";
 import Project from "../../component/common/Project";
-import ShareFolder from "../../component/common/ShareFolder";
+import GuestBook from "../../component/common/GuestBook";
 
 const CHANGE_WINDOW_LOCATION = createAction("CHANGE_WINDOW_LOCATION");
 const CHANGE_WINDOW_SIZE = createAction("CHANGE_WINDOW_SIZE");
@@ -37,7 +37,7 @@ const initialState = {
     text: "프로필",
     isMinimized: false,
     isMaximized: false,
-    size: { width: 384, height: 400 },
+    size: { width: 800, height: 400 },
     prevSize: { width: 200, height: 300 },
     location: { top: 100, left: 100 },
     prevLocation: { width: 100, height: 100 },
@@ -75,11 +75,11 @@ const initialState = {
     isOpen: false,
     Content: Blog,
   },
-  folder: {
-    type: "folder",
+  guestBook: {
+    type: "guestBook",
     icon: folderIcon,
     background: "rgb(0, 214, 200, 0.3)",
-    text: "공유폴더",
+    text: "방명록",
     isMinimized: false,
     isMaximized: false,
     size: { width: 384, height: 400 },
@@ -88,7 +88,7 @@ const initialState = {
     prevLocation: { width: 100, height: 100 },
     zIndex: 100,
     isOpen: false,
-    Content: ShareFolder,
+    Content: GuestBook,
   },
   maxZindex: 100,
 };

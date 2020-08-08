@@ -74,6 +74,8 @@ const ProgramBox = ({
 }) => {
   const boxRef = useRef();
   const [resizeMode, setResizeMode] = useState("default");
+  const isMobile = size.width < 764;
+
   const changeLocationWhenWindowResize = () => {
     if (
       windowSize.height < location.top + boxRef.current.scrollHeight + 60 ||
@@ -250,7 +252,6 @@ const ProgramBox = ({
     switch (resizeMode) {
       case "ew-resize":
       case "sw-resize":
-        console.log(location.left - moveX);
         changeWindowLocation({
           location: {
             top,
@@ -433,7 +434,7 @@ const ProgramBox = ({
           </StyledTabResizeTab>
         </StyledProgramHeader>
         <StyledProgramContent>
-          <Content padding={isMaximized ? "none" : "30px;"}></Content>
+          <Content padding={isMaximized ? "none" : "30px;"} isMobile={isMobile}></Content>
         </StyledProgramContent>
       </StyledProgramBox>
     </div>

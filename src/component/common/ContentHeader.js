@@ -19,7 +19,7 @@ const StyledContentTitle = styled.div`
   height: 140px;
   background: #26272b;
   font-family: "Do Hyeon";
-  padding: 30px;
+  padding: ${(props) => (props.isMobile ? "10px" : "30px")};
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -53,10 +53,10 @@ const StyledContentLi = styled.li`
   }
 `;
 
-const ContentHeader = ({ text, contents }) => {
+const ContentHeader = ({ text, contents, isMobile }) => {
   return (
     <StyledContentHeader>
-      <StyledContentTitle>
+      <StyledContentTitle isMobile={isMobile}>
         <Paragraph text={text} fontSize={"1.6rem"}></Paragraph>
       </StyledContentTitle>
       {contents ? (

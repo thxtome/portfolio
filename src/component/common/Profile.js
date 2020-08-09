@@ -51,9 +51,10 @@ const StyledArticle = styled.article`
   height: max-content;
   display: flex;
   box-sizing: border-box;
-  padding: ${(props) => (props.isMobile ? "30px 0 0 10px" : "30px 0 0 30px")};
-  justify-content: flex-start;
+  padding: ${(props) => (props.isMobile ? "30px 0 0 10px" : "15px 0 0 0")};
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledArticleContentBox = styled.article`
@@ -66,21 +67,46 @@ const StyledArticleContentBox = styled.article`
   min-width: 240px;
 `;
 
+const StyledProfileCard = styled.div`
+  width: 80%;
+  min-width: 240px;
+  height: 150px;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-self: center;
+  flex-wrap: wrap;
+  background: #26272b;
+  margin: auto;
+`;
+
 const Profile = ({ isMobile }) => {
   const contents = ["WHO AM I", "SKILLS", "CONTACT"];
   return (
     <StyledProfile>
-      <ContentHeader text={"PROFILE"} contents={contents} isMobile={isMobile}></ContentHeader>
+      <ContentHeader
+        text={"PROFILE"}
+        contents={contents}
+        isMobile={isMobile}
+      ></ContentHeader>
       <StyledProfileContent>
         <StyledContentSection isMobile={isMobile}>
           <StyledSectionTitle>
-            <Paragraph text={"WHO AM I"} color={"black"} fontSize={"1.6rem"}></Paragraph>
+            <Paragraph
+              text={"WHO AM I"}
+              color={"black"}
+              fontSize={"1.6rem"}
+            ></Paragraph>
           </StyledSectionTitle>
           <StyledArticle isMobile={isMobile}>
-            <StyledArticleContentBox width={"50%;"}></StyledArticleContentBox>
+            <StyledArticleContentBox width={"50%;"}>
+              <StyledProfileCard>a</StyledProfileCard>
+            </StyledArticleContentBox>
             <StyledArticleContentBox width={"50%;"}>
               <Paragraph
-                text={"평범한 직장에서 엑셀 매크로를 만들다 개발의 매력에 푹 빠졌습니다."}
+                text={
+                  "평범한 직장에서 엑셀 매크로를 만들다 개발의 매력에 푹 빠졌습니다."
+                }
                 color={"black"}
                 fontSize={"1rem"}
                 margin={"0 0 10px 0"}
@@ -110,19 +136,25 @@ const Profile = ({ isMobile }) => {
                 margin={"0 0 10px 0"}
               ></Paragraph>
               <Paragraph
-                text={"저는 유쾌하고 깔끔한 성향의 사람이고 코드 역시 이런 성향을 추구합니다."}
+                text={
+                  "저는 유쾌하고 깔끔한 성향의 사람이고 코드 역시 이런 성향을 추구합니다."
+                }
                 color={"black"}
                 fontSize={"1rem"}
                 margin={"0 0 10px 0"}
               ></Paragraph>
               <Paragraph
-                text={"주변에서 많이 배우고 또 배운 것을 나눠주는 사람이 되려고 노력합니다."}
+                text={
+                  "주변에서 많이 배우고 또 배운 것을 나눠주는 사람이 되려고 노력합니다."
+                }
                 color={"black"}
                 fontSize={"1rem"}
                 margin={"0 0 10px 0"}
               ></Paragraph>
               <Paragraph
-                text={"와주신 분들도 제 주변인이 되어주셨으면 합니다. 감사합니다"}
+                text={
+                  "와주신 분들도 제 주변인이 되어주셨으면 합니다. 감사합니다"
+                }
                 color={"black"}
                 fontSize={"1rem"}
                 margin={"0 0 10px 0"}

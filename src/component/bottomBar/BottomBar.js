@@ -3,6 +3,7 @@ import styled from "styled-components";
 import StartMenuContainer from "../../container/bottomBar/startMenu/StartMenuContainer";
 import CalendarMenuContainer from "../../container/bottomBar/calendarMenu/CalendarMenuContainer";
 import BottomBarItem from "./BottomBarItem";
+import isMobile from "../../lib/MobileDetect";
 
 const StyledBottomBar = styled.footer`
   position: fixed;
@@ -21,7 +22,7 @@ const StyledBottomIconBox = styled.div`
   height: 60px;
   display: grid;
   grid-template: 60px / repeat(auto-fill, 60px);
-  min-width: 360px;
+  min-width: 300px;
 `;
 
 const StyledBottomCalendarBox = styled.div`
@@ -46,9 +47,13 @@ function BottomBar({ programs, closeBottomMenu, openWindow }) {
           />
         ))}
       </StyledBottomIconBox>
-      <StyledBottomCalendarBox>
-        <CalendarMenuContainer></CalendarMenuContainer>
-      </StyledBottomCalendarBox>
+      {isMobile ? (
+        ""
+      ) : (
+        <StyledBottomCalendarBox>
+          <CalendarMenuContainer></CalendarMenuContainer>
+        </StyledBottomCalendarBox>
+      )}
     </StyledBottomBar>
   );
 }

@@ -5,8 +5,8 @@ import folderIcon from "../../svg/folder.svg";
 import blogIcon from "../../svg/blog.svg";
 import _ from "lodash";
 import Blog from "../../component/common/Blog";
-import Profile from "../../component/common/Profile";
-import Project from "../../component/common/Project";
+import Profile from "../../component/profile/Profile";
+import Project from "../../component/project/Project";
 import GuestBook from "../../component/common/GuestBook";
 
 const CHANGE_WINDOW_LOCATION = createAction("CHANGE_WINDOW_LOCATION");
@@ -36,11 +36,11 @@ const initialState = {
     background: "rgb(0, 131, 143,0.3)",
     text: "프로필",
     isMinimized: false,
-    isMaximized: false,
+    isMaximized: true,
     size: { width: 800, height: 400 },
-    prevSize: { width: 200, height: 300 },
+    prevSize: { width: 350, height: 500 },
     location: { top: 100, left: 100 },
-    prevLocation: { width: 100, height: 100 },
+    prevLocation: { top: 100, left: 100 },
     zIndex: 100,
     isOpen: false,
     Content: Profile,
@@ -51,11 +51,11 @@ const initialState = {
     background: "rgb(24, 0, 235,0.3)",
     text: "프로젝트",
     isMinimized: false,
-    isMaximized: false,
+    isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 200, height: 300 },
+    prevSize: { width: 350, height: 500 },
     location: { top: 100, left: 100 },
-    prevLocation: { width: 100, height: 100 },
+    prevLocation: { top: 100, left: 100 },
     zIndex: 100,
     isOpen: false,
     Content: Project,
@@ -66,11 +66,11 @@ const initialState = {
     icon: blogIcon,
     text: "블로그",
     isMinimized: false,
-    isMaximized: false,
+    isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 200, height: 300 },
+    prevSize: { width: 350, height: 500 },
     location: { top: 100, left: 100 },
-    prevLocation: { width: 100, height: 100 },
+    prevLocation: { top: 100, left: 100 },
     zIndex: 100,
     isOpen: false,
     Content: Blog,
@@ -81,11 +81,11 @@ const initialState = {
     background: "rgb(0, 214, 200, 0.3)",
     text: "방명록",
     isMinimized: false,
-    isMaximized: false,
+    isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 200, height: 300 },
+    prevSize: { width: 350, height: 500 },
     location: { top: 100, left: 100 },
-    prevLocation: { width: 100, height: 100 },
+    prevLocation: { top: 100, left: 100 },
     zIndex: 100,
     isOpen: false,
     Content: GuestBook,

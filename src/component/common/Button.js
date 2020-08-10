@@ -24,6 +24,8 @@ const StyledButton = styled.button`
     color: #999;
   }
   &:hover {
+    cursor: pointer;
+    transition: 0.3s;
     background: ${(props) => (props.hover ? props.hover : "none")};
   }
 `;

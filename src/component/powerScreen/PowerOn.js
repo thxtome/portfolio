@@ -20,7 +20,7 @@ function PowerOn({ unmountPowerScreen }) {
   useEffect(() => {
     let key = setTimeout(() => {
       unmountPowerScreen();
-    }, 2000);
+    }, 1500);
     return () => {
       clearTimeout(key);
     };

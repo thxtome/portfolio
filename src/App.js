@@ -76,7 +76,7 @@ html, body {
  
   body {
     margin: 0;
-    font: 14px "Nanum Gothic", "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", sans-serif;
+    // font: 14px "Nanum Gothic",  Arial, sans-serif;
     -webkit-text-size-adjust: 100%;
     -webkit-user-select: none;
     -khtml-user-select: none;

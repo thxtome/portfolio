@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Paragraph from "./Paragraph";
 
@@ -19,7 +19,7 @@ const StyledContentTitle = styled.div`
   height: 140px;
   background: #26272b;
   font-family: "Do Hyeon";
-  padding: ${(props) => (props.isMobile ? "10px" : "30px")};
+  padding: ${(props) => (props.isMobileView ? "10px" : "15px")};
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -53,16 +53,32 @@ const StyledContentLi = styled.li`
   }
 `;
 
-const ContentHeader = ({ text, contents, isMobile }) => {
+const ContentHeader = ({ text, contents, isMobileView, refs }) => {
   return (
     <StyledContentHeader>
-      <StyledContentTitle isMobile={isMobile}>
+      <StyledContentTitle isMobileView={isMobileView}>
         <Paragraph text={text} fontSize={"1.6rem"}></Paragraph>
       </StyledContentTitle>
       {contents ? (
         <StyledContentUl>
           {contents.map((text, index) => {
-            return <StyledContentLi key={index}>{text}</StyledContentLi>;
+            return (
+              <StyledContentLi
+                key={index}
+                onClick={(e) => {
+                  if (refs[index].current) {
+                    console.log(refs[index].current.offsetTop);
+                    e.target.parentNode.parentNode.parentNode.scrollTo({
+                      top: refs[index].current.offsetTop + 190,
+                      left: 0,
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+              >
+                {text}
+              </StyledContentLi>
+            );
           })}
         </StyledContentUl>
       ) : (

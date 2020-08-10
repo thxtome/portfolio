@@ -4,6 +4,7 @@ import Paragraph from "../common/Paragraph";
 import Button from "../common/Button";
 import Icon from "../common/Icon";
 import _ from "lodash";
+import isMobile from "../../lib/MobileDetect";
 
 const StyledProgramBox = styled.div`
   width: 100%;
@@ -74,7 +75,7 @@ const ProgramBox = ({
 }) => {
   const boxRef = useRef();
   const [resizeMode, setResizeMode] = useState("default");
-  const isMobile = size.width < 764;
+  const isMobileView = size.width < 764;
 
   const changeLocationWhenWindowResize = () => {
     if (
@@ -234,7 +235,7 @@ const ProgramBox = ({
         : size.height + moveY;
 
     let nextWidth =
-      size.width + moveX < 200 ? 200 : size.width + moveX > windowSize.width ? windowSize.width : size.width + moveX;
+      size.width + moveX < 320 ? 320 : size.width + moveX > windowSize.width ? windowSize.width : size.width + moveX;
 
     changeWindowSize({
       size: {
@@ -246,7 +247,7 @@ const ProgramBox = ({
 
     let top = location.top;
     let left = location.left;
-    let minLeft = location.left + size.width - 200;
+    let minLeft = location.left + size.width - 320;
     let minHeight = location.top + size.height - 30;
 
     switch (resizeMode) {
@@ -402,7 +403,9 @@ const ProgramBox = ({
                 minimizeWindow({ target: type });
               }}
             ></Button>
-            {isMaximized ? (
+            {isMobile ? (
+              ""
+            ) : isMaximized ? (
               <Button
                 text={`\u29C9`}
                 color={"black"}
@@ -434,7 +437,7 @@ const ProgramBox = ({
           </StyledTabResizeTab>
         </StyledProgramHeader>
         <StyledProgramContent>
-          <Content padding={isMaximized ? "none" : "30px;"} isMobile={isMobile}></Content>
+          <Content padding={isMaximized ? "none" : "30px;"} isMobileView={isMobileView}></Content>
         </StyledProgramContent>
       </StyledProgramBox>
     </div>

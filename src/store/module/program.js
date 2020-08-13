@@ -7,7 +7,7 @@ import _ from "lodash";
 import Blog from "../../component/common/Blog";
 import Profile from "../../component/profile/Profile";
 import Project from "../../component/project/Project";
-import GuestBook from "../../component/common/GuestBook";
+import GuestBook from "../../component/guestBook/GuestBook";
 
 const CHANGE_WINDOW_LOCATION = createAction("CHANGE_WINDOW_LOCATION");
 const CHANGE_WINDOW_SIZE = createAction("CHANGE_WINDOW_SIZE");

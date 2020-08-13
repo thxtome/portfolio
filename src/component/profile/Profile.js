@@ -26,6 +26,8 @@ const StyledProfileContent = styled.div`
   top: -50px;
   background: #fff;
 `;
+
+
 const Profile = ({ isMobileView }) => {
   const contents = ["WHO AM I", "SKILLS", "CONTACT"];
   const whoAmIRef = useRef();

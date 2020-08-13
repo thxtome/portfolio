@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Paragraph from "../common/Paragraph";
-import InputText from "../common/InputText";
 import Face from "../../svg/face.svg";
 
 const StyledContentSection = styled.section`
@@ -108,7 +107,13 @@ const WhoAmI = ({ isMobileView, refs }) => {
       <StyledArticle isMobileView={isMobileView}>
         <StyledArticleContentBox width={"50%;"}>
           <StyledProfileCard isMobileView={isMobileView}>
-            <StyledProfileCardImg isMobileView={isMobileView} src={Face}></StyledProfileCardImg>
+            <StyledProfileCardImg
+              isMobileView={isMobileView}
+              src={Face}
+              onLoad={() => {
+                console.log("load");
+              }}
+            ></StyledProfileCardImg>
             <StyledProfileCardTextBox>
               {profileText.map((text, index) => {
                 return (

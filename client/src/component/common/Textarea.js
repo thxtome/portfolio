@@ -21,8 +21,12 @@ const StyledTextarea = styled.textarea`
   }
 `;
 
-const Textarea = ({ placeholder, ...rest }) => {
-  return <StyledTextarea {...rest} placeholder={placeholder}></StyledTextarea>;
+const Textarea = ({ placeholder, text, ...rest }) => {
+  return (
+    <StyledTextarea {...rest} placeholder={placeholder}>
+      {text && text}
+    </StyledTextarea>
+  );
 };
 
 export default Textarea;

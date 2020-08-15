@@ -3,9 +3,8 @@ import styled from "styled-components";
 import ContentFooter from "../common/ContentFooter";
 import ContentHeader from "../common/ContentHeader";
 import Paragraph from "../common/Paragraph";
-import WriteBox from "./WriteBox";
+import WritePost from "./WritePost";
 import Post from "./Post";
-import Button from "../common/Button";
 
 const StyledGuestBook = styled.div`
   width: 100%;
@@ -49,28 +48,32 @@ const StyledSectionTitle = styled.title`
   box-sizing: border-box;
 `;
 
-const StyledPosts = styled.article`
-  width: 700px;
-  min-width: 290px;
+const StyledHr = styled.hr`
+  width: 70%;
+  height: 1px;
+  background: black;
+  align-self: center;
+`;
+
+const StyledArticle = styled.article`
+  width: 100%;
+  max-width: 1120px;
   height: max-content;
   display: flex;
   box-sizing: border-box;
-  justify-content: flex-start;
+  padding: ${(props) => (props.isMobileView ? "15px 0 0 0" : "30px 5px 0 5px")};
   flex-wrap: wrap;
-  min-width: 270px;
-  margin-top: 10px;
-`;
-
-const StyledPagination = styled.div`
-  width: 700px;
-  min-width: 290px;
-  height: 30px;
-  display: flex;
-  box-sizing: border-box;
   justify-content: space-around;
-  flex-wrap: wrap;
-  min-width: 270px;
-  margin-top: 10px;
+  align-items: flex-start;
+`;
+const StyledEmptyPost = styled.article`
+  width: 320px;
+  min-width: 240px;
+  padding: 0;
+  margin: 0;
+  min-height: 0px;
+  height: 0px;
+  border: 0px;
 `;
 
 const GuestBook = ({ isMobileView }) => {
@@ -80,20 +83,21 @@ const GuestBook = ({ isMobileView }) => {
       <StyledGuestBookContent>
         <StyledContentSection>
           <StyledSectionTitle>
-            <Paragraph text={"방명록"} color={"black"} fontSize={"1.5rem"} fontWeight={"bold"}></Paragraph>
+            <Paragraph text={"방명록"} color={"black"} fontSize={"1.4rem"} fontWeight={"bold"}></Paragraph>
+            <StyledHr />
           </StyledSectionTitle>
-          <WriteBox></WriteBox>
-          <StyledPosts>
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-          </StyledPosts>
-          <StyledPagination>
-            <Button text={"이전"} background={"#525252"} width={"90px"} height={"30px"} hover={"#232323"}></Button>
-            <Button text={"다음"} background={"#525252"} width={"90px"} height={"30px"} hover={"#232323"}></Button>
-          </StyledPagination>
+          <StyledArticle>
+            <WritePost />
+            <Post></Post>
+            <Post></Post>
+            <Post></Post>
+            <Post></Post>
+            <Post></Post>
+            <Post></Post>
+            <Post></Post>
+            <StyledEmptyPost></StyledEmptyPost>
+            <StyledEmptyPost></StyledEmptyPost>
+          </StyledArticle>
         </StyledContentSection>
       </StyledGuestBookContent>
       <ContentFooter></ContentFooter>

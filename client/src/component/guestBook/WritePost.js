@@ -2,11 +2,10 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Paragraph from "../common/Paragraph";
 import Textarea from "../common/Textarea";
-import Button from "../common/Button";
 import IconButton from "../common/IconButton";
-import PencilSvg from "../../svg/guestbook/pencil.svg";
-import TrashSvg from "../../svg/guestbook/trash.svg";
 import SaveSvg from "../../svg/guestbook/save.svg";
+import LockSvg from "../../svg/guestbook/lock.svg";
+import InputText from "../common/InputText";
 
 const StyledCard = styled.div`
   width: 320px;
@@ -42,7 +41,7 @@ const StyledContentBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   margin-bottom: 5px;
 `;
 
@@ -64,48 +63,29 @@ const StyledButtons = styled.div`
 `;
 
 const Post = ({ isMobileView }) => {
-  const [isModifing, setIsModifing] = useState(false);
+  const [isSecret, setIsSecret] = useState(false);
   return (
     <StyledCard>
       <StyledTextBox>
-        <Paragraph text={"nickname"} color={"black"} fontSize={"1rem"} fontWeight={"bold"} />
+        <InputText text={"닉네입"} color={"black"} fontSize={"1rem"} fontWeight={"bold"} />
       </StyledTextBox>
       <StyledTextBox>
         <Paragraph text={"2020-08-15"} color={"black"} fontSize={"0.8rem"} />
       </StyledTextBox>
       <StyledContentBox background={"#ddd"}>
-        {isModifing ? (
-          <Textarea
-            placeholder={"여기서부터 글이 시작됩니다."}
-            color={"black"}
-            fontSize={"1rem"}
-            width={"100%"}
-            defaultValue={
-              "여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다."
-            }
-          />
-        ) : (
-          <Paragraph
-            text={
-              "여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다.여기서부터 글이 시작됩니다."
-            }
-            color={"black"}
-            fontSize={"0.8rem"}
-            margin={"0px 0px 10px 0px"}
-          />
-        )}
-
+        <Textarea placeholder={"여기서부터 글이 시작됩니다."} color={"black"} fontSize={"1rem"} width={"100%"} />
         <StyledButtonBox>
           <StyledButtons>
             <IconButton
-              src={isModifing ? SaveSvg :PencilSvg}
+              src={LockSvg}
               width={"18px"}
               height={"18px"}
               onclick={() => {
-                setIsModifing(!isModifing);
+                setIsSecret(!isSecret);
               }}
+              background={isSecret ? "#47ff368a" : ""}
             ></IconButton>
-            <IconButton src={TrashSvg} width={"18px"} height={"18px"}></IconButton>
+            <IconButton src={SaveSvg} width={"18px"} height={"18px"}></IconButton>
           </StyledButtons>
         </StyledButtonBox>
       </StyledContentBox>

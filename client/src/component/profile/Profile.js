@@ -4,7 +4,7 @@ import ContentFooter from "../common/ContentFooter";
 import ContentHeader from "../common/ContentHeader";
 import WhoAmI from "./WhoAmI";
 import Skills from "./Skills";
-import Contact from "./Contact";
+import ContactContainer from "../../container/profile/ContactContainer";
 
 const StyledProfile = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ const StyledProfile = styled.div`
 const StyledProfileContent = styled.div`
   width: 90%;
   max-width: 1120px;
-  height: max-content%;
+  height: max-content;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -26,7 +26,6 @@ const StyledProfileContent = styled.div`
   top: -50px;
   background: #fff;
 `;
-
 
 const Profile = ({ isMobileView }) => {
   const contents = ["WHO AM I", "SKILLS", "CONTACT"];
@@ -40,7 +39,7 @@ const Profile = ({ isMobileView }) => {
       <StyledProfileContent>
         <WhoAmI isMobileView={isMobileView} refs={whoAmIRef} />
         <Skills isMobileView={isMobileView} refs={skillsRef} />
-        <Contact isMobileView={isMobileView} refs={contactRef} />
+        <ContactContainer isMobileView={isMobileView} refs={contactRef} />
       </StyledProfileContent>
       <ContentFooter></ContentFooter>
     </StyledProfile>

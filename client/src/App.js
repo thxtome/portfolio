@@ -22,6 +22,7 @@ import NanumGothicBoldWoff2 from "./asset/font/nanum-gothic/nanum-gothic-v17-lat
 import NanumGothicBoldWoff from "./asset/font/nanum-gothic/nanum-gothic-v17-latin_korean-700.woff";
 import NanumGothicBoldTtf from "./asset/font/nanum-gothic/nanum-gothic-v17-latin_korean-700.ttf";
 import NanumGothicBoldSvg from "./asset/font/nanum-gothic/nanum-gothic-v17-latin_korean-700.svg";
+import ToastBoxContainer from "./container/common/ToastBoxContainer";
 
 const GlobalStyle = createGlobalStyle`
 /* do-hyeon-regular - latin */
@@ -105,6 +106,7 @@ function App() {
     <Provider store={store}>
       <GlobalStyle />
       <AppBlock>
+        <ToastBoxContainer />
         <PowerScreenContainer></PowerScreenContainer>
         <Layout></Layout>
       </AppBlock>

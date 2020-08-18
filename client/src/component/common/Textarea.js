@@ -11,7 +11,7 @@ const StyledTextarea = styled.textarea`
   font-size: ${(props) => (props.fontSize ? props.fontSize : "1rem")};
   background: ${(props) => (props.background ? props.background : "none")};
   border: ${(props) => (props.border ? props.border : "none")};
-
+  padding: 5px 0 0 5px;
   &:focus {
     border: none;
     border-image-width: 0px;
@@ -21,9 +21,9 @@ const StyledTextarea = styled.textarea`
   }
 `;
 
-const Textarea = ({ placeholder, text, ...rest }) => {
+const Textarea = ({ placeholder, text, onchange, ...rest }) => {
   return (
-    <StyledTextarea {...rest} placeholder={placeholder}>
+    <StyledTextarea onChange={onchange} {...rest} placeholder={placeholder}>
       {text && text}
     </StyledTextarea>
   );

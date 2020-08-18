@@ -1,10 +1,25 @@
-import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
-import styled from "styled-components";
-import Paragraph from "../common/Paragraph";
-import Button from "../common/Button";
-import Icon from "../common/Icon";
-import _ from "lodash";
-import isMobile from "../../lib/MobileDetect";
+import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
+import styled from 'styled-components';
+import Paragraph from '../common/Paragraph';
+import Button from '../common/Button';
+import Icon from '../common/Icon';
+import _ from 'lodash';
+import isMobile from '../../lib/MobileDetect';
+import ClockLoader from 'react-spinners/ClockLoader';
+
+const StyledIsLoading = styled.div`
+  width: calc(100% - 15px);
+  min-height: calc(100% - 30px);
+  background: #000;
+  opacity: 0.6;
+  position: relative;
+  top: 31px;
+  left: 0;
+  z-index: ${Number.MAX_SAFE_INTEGER};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const StyledProgramBox = styled.div`
   width: 100%;
@@ -16,7 +31,7 @@ const StyledProgramBox = styled.div`
   flex-wrap: wrap;
   background: #fff;
   border: 1px solid black;
-  cursor: ${(props) => props.resizeMode};
+  cursor: ${props => props.resizeMode};
 `;
 
 const StyledProgramHeader = styled.header`
@@ -63,7 +78,7 @@ const StyledTabResizeTab = styled.div`
 `;
 
 const ProgramBox = ({
-  program: { type, icon, text, isMinimized, isMaximized, size, location, zIndex, Content },
+  program: { type, icon, text, isMinimized, isMaximized, size, location, zIndex, Content, isLoading },
   windowSize,
   changeWindowLocation,
   minimizeWindow,
@@ -74,9 +89,24 @@ const ProgramBox = ({
   focusOnWindow,
 }) => {
   const boxRef = useRef();
-  const [resizeMode, setResizeMode] = useState("default");
+  const [resizeMode, setResizeMode] = useState('default');
   const isMobileView = size.width < 764;
-
+  const divStyle = {
+    position: 'absolute',
+    top: location.top,
+    left: location.left,
+    width: size.width,
+    height: size.height,
+    minWidth: '200px',
+    minHeight: '30px',
+    border: isMaximized ? 'none' : '5px solid rgba(0, 0, 0, 0)',
+    display: isMinimized ? 'none' : 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    cursor: resizeMode,
+    transition: isMaximized ? '0.5s' : 'none',
+    zIndex: zIndex,
+  };
   const changeLocationWhenWindowResize = () => {
     if (
       windowSize.height < location.top + boxRef.current.scrollHeight + 60 ||
@@ -146,21 +176,22 @@ const ProgramBox = ({
       });
     }
   }, [isMaximized, isMinimized]);
+  console.log(isLoading);
 
   let moveX = 0;
   let moveY = 0;
 
-  const addDragEvt = (e) => {
-    document.addEventListener("mouseup", removeDragEvt);
-    document.addEventListener("mousemove", dragEvt);
+  const addDragEvt = e => {
+    document.addEventListener('mouseup', removeDragEvt);
+    document.addEventListener('mousemove', dragEvt);
   };
 
   const removeDragEvt = () => {
-    document.removeEventListener("mouseup", removeDragEvt);
-    document.removeEventListener("mousemove", dragEvt);
+    document.removeEventListener('mouseup', removeDragEvt);
+    document.removeEventListener('mousemove', dragEvt);
   };
 
-  const dragEvt = (e) => {
+  const dragEvt = e => {
     let topMax = window.innerHeight - boxRef.current.scrollHeight - 60;
     let leftMax = window.innerWidth - boxRef.current.scrollWidth;
     moveY += e.movementY;
@@ -173,49 +204,49 @@ const ProgramBox = ({
     changeWindowLocation({ location: nextLocation, target: type });
   };
 
-  const addResizeEvt = (e) => {
-    document.addEventListener("mousemove", resizeEvt);
-    document.addEventListener("mouseup", removeResizeEvt);
+  const addResizeEvt = e => {
+    document.addEventListener('mousemove', resizeEvt);
+    document.addEventListener('mouseup', removeResizeEvt);
   };
 
   const removeResizeEvt = () => {
-    document.removeEventListener("mouseup", removeResizeEvt);
-    document.removeEventListener("mousemove", resizeEvt);
+    document.removeEventListener('mouseup', removeResizeEvt);
+    document.removeEventListener('mousemove', resizeEvt);
   };
 
-  const resizeEvt = (e) => {
+  const resizeEvt = e => {
     let tempMoveX = e.movementX;
     let tempMoveY = e.movementY;
 
     switch (resizeMode) {
-      case "ew-resize":
+      case 'ew-resize':
         tempMoveY = 0;
         tempMoveX *= -1;
         break;
 
-      case "sw-resize":
+      case 'sw-resize':
         tempMoveX *= -1;
         break;
 
-      case "e-resize":
+      case 'e-resize':
         tempMoveY = 0;
         break;
 
-      case "n-resize":
+      case 'n-resize':
         tempMoveX = 0;
         tempMoveY *= -1;
         break;
 
-      case "nw-resize":
+      case 'nw-resize':
         tempMoveY *= -1;
         tempMoveX *= -1;
         break;
 
-      case "ne-resize":
+      case 'ne-resize':
         tempMoveY *= -1;
         break;
 
-      case "ns-resize":
+      case 'ns-resize':
         tempMoveX = 0;
         break;
 
@@ -251,8 +282,8 @@ const ProgramBox = ({
     let minHeight = location.top + size.height - 30;
 
     switch (resizeMode) {
-      case "ew-resize":
-      case "sw-resize":
+      case 'ew-resize':
+      case 'sw-resize':
         changeWindowLocation({
           location: {
             top,
@@ -262,7 +293,7 @@ const ProgramBox = ({
         });
         break;
 
-      case "n-resize":
+      case 'n-resize':
         changeWindowLocation({
           location: {
             top: top - moveY < minHeight ? top - moveY : minHeight,
@@ -272,7 +303,7 @@ const ProgramBox = ({
         });
         break;
 
-      case "nw-resize":
+      case 'nw-resize':
         changeWindowLocation({
           location: {
             top: top - moveY < minHeight ? top - moveY : minHeight,
@@ -282,7 +313,7 @@ const ProgramBox = ({
         });
         break;
 
-      case "ne-resize":
+      case 'ne-resize':
         changeWindowLocation({
           location: {
             top: top - moveY < minHeight ? top - moveY : minHeight,
@@ -298,7 +329,7 @@ const ProgramBox = ({
     }
   };
 
-  const changeResizeMode = (e) => {
+  const changeResizeMode = e => {
     let left = false;
     let right = false;
     let up = false;
@@ -308,80 +339,57 @@ const ProgramBox = ({
     let x = e.clientX - location.left;
     let y = e.clientY - location.top;
     if (x >= 0 && x < 5) {
-      resizeType = "ew-resize";
+      resizeType = 'ew-resize';
       left = true;
     } else if (x > size.width + 5 && x < size.width + 10) {
-      resizeType = "e-resize";
+      resizeType = 'e-resize';
       right = true;
     }
 
     if (y >= 0 && y < 5) {
-      resizeType = "n-resize";
+      resizeType = 'n-resize';
       up = true;
     } else if (y > size.height + 5 && y < size.height + 10) {
-      resizeType = "ns-resize";
+      resizeType = 'ns-resize';
       down = true;
     }
 
     if (left && up) {
-      resizeType = "nw-resize";
+      resizeType = 'nw-resize';
     } else if (left && down) {
-      resizeType = "sw-resize";
+      resizeType = 'sw-resize';
     } else if (right && up) {
-      resizeType = "ne-resize";
+      resizeType = 'ne-resize';
     } else if (right && down) {
-      resizeType = "se-resize";
+      resizeType = 'se-resize';
     }
-
     setResizeMode(resizeType);
   };
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: location.top,
-        left: location.left,
-        width: size.width,
-        height: size.height,
-        minWidth: "200px",
-        minHeight: "30px",
-        border: isMaximized ? "none" : "5px solid rgba(0, 0, 0, 0)",
-        display: isMinimized ? "none" : "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        cursor: resizeMode,
-        transition: isMaximized ? "0.5s" : "none",
-        zIndex: zIndex,
-      }}
+      style={divStyle}
       ref={boxRef}
-      onMouseEnter={(e) => {
-        changeResizeMode(e);
-      }}
-      onMouseLeave={(e) => {
-        setResizeMode("default");
-      }}
+      onMouseEnter={e => changeResizeMode(e)}
+      onMouseLeave={e => setResizeMode('default')}
       onMouseDown={() => {
         focusOnWindow({ target: type });
-        if (resizeMode === "default") {
+        if (resizeMode === 'default') {
           return;
         }
         addResizeEvt();
       }}
     >
-      <StyledProgramBox
-        onMouseEnter={(e) => {
-          setResizeMode("default");
-        }}
-        onMouseLeave={(e) => {
-          changeResizeMode(e);
-        }}
-      >
+      {isLoading && (
+        <StyledIsLoading>
+          <ClockLoader size={150} color={'#fff'} />
+        </StyledIsLoading>
+      )}
+
+      <StyledProgramBox onMouseEnter={e => setResizeMode('default')} onMouseLeave={e => changeResizeMode(e)}>
         <StyledProgramHeader>
           <StyledProgramTitle
-            onMouseDown={(e) => {
-              addDragEvt(e);
-            }}
+            onMouseDown={e => addDragEvt(e)}
             onDoubleClick={() => {
               if (isMaximized) {
                 releaseMaximizeWindow({ target: type });
@@ -391,53 +399,44 @@ const ProgramBox = ({
             }}
           >
             <Icon src={icon} width={15} height={15}></Icon>
-            <Paragraph text={text} margin={"0 0 0 10px"} color={"black"}></Paragraph>
+            <Paragraph text={text} margin={'0 0 0 10px'} color={'black'}></Paragraph>
           </StyledProgramTitle>
-
           <StyledTabResizeTab>
             <Button
-              text={"ㅡ"}
-              color={"black"}
-              hover={"#999"}
-              onclick={() => {
-                minimizeWindow({ target: type });
-              }}
+              text={'ㅡ'}
+              color={'black'}
+              hover={'#999'}
+              onclick={() => minimizeWindow({ target: type })}
             ></Button>
             {isMobile ? (
-              ""
+              ''
             ) : isMaximized ? (
               <Button
                 text={`\u29C9`}
-                color={"black"}
-                hover={"#999"}
-                letterSpacing={"0.1px"}
-                onclick={() => {
-                  releaseMaximizeWindow({ target: type });
-                }}
+                color={'black'}
+                hover={'#999'}
+                letterSpacing={'0.1px'}
+                onclick={() => releaseMaximizeWindow({ target: type })}
               ></Button>
             ) : (
               <Button
                 text={`\u25FB`}
-                color={"black"}
-                hover={"#999"}
-                onclick={() => {
-                  maximizeWindow({ target: type });
-                }}
+                color={'black'}
+                hover={'#999'}
+                onclick={() => maximizeWindow({ target: type })}
               ></Button>
             )}
 
             <Button
-              text={"X"}
-              color={"black"}
-              hover={"#fe2d2d"}
-              onclick={() => {
-                closeProgram({ target: type });
-              }}
+              text={'X'}
+              color={'black'}
+              hover={'#fe2d2d'}
+              onclick={() => closeProgram({ target: type })}
             ></Button>
           </StyledTabResizeTab>
         </StyledProgramHeader>
         <StyledProgramContent>
-          <Content padding={isMaximized ? "none" : "30px;"} isMobileView={isMobileView}></Content>
+          <Content padding={isMaximized ? 'none' : '30px;'} isMobileView={isMobileView}></Content>
         </StyledProgramContent>
       </StyledProgramBox>
     </div>

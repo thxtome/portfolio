@@ -176,7 +176,6 @@ const ProgramBox = ({
       });
     }
   }, [isMaximized, isMinimized]);
-  console.log(isLoading);
 
   let moveX = 0;
   let moveY = 0;

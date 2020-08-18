@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
-import styled from "styled-components";
-import ContentFooter from "../common/ContentFooter";
-import ContentHeader from "../common/ContentHeader";
-import Paragraph from "../common/Paragraph";
-import WritePost from "./WritePost";
-import Post from "./Post";
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+import ContentFooter from '../common/ContentFooter';
+import ContentHeader from '../common/ContentHeader';
+import Paragraph from '../common/Paragraph';
+import WritePost from './WritePost';
+import Post from './Post';
+import WritePostContainer from '../../container/guestBook/WritePostContainer';
 
 const StyledGuestBook = styled.div`
   width: 100%;
@@ -35,13 +36,13 @@ const StyledContentSection = styled.section`
   justify-content: center;
   flex-wrap: wrap;
   box-sizing: border-box;
-  padding: ${(props) => (props.isMobileView ? "30px 10px 0 10px" : "10px 15px 30px 15px")};
+  padding: ${props => (props.isMobileView ? '30px 10px 0 10px' : '10px 15px 30px 15px')};
 `;
 
 const StyledSectionTitle = styled.title`
   width: 100%;
   max-width: 1120px;
-  font-family: "Do Hyeon";
+  font-family: 'Do Hyeon';
   height: max-content;
   display: flex;
   justify-content: flex-start;
@@ -61,7 +62,7 @@ const StyledArticle = styled.article`
   height: max-content;
   display: flex;
   box-sizing: border-box;
-  padding: ${(props) => (props.isMobileView ? "15px 0 0 0" : "30px 5px 0 5px")};
+  padding: ${props => (props.isMobileView ? '15px 0 0 0' : '30px 5px 0 5px')};
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: flex-start;
@@ -79,17 +80,15 @@ const StyledEmptyPost = styled.article`
 const GuestBook = ({ isMobileView }) => {
   return (
     <StyledGuestBook>
-      <ContentHeader text={"GuestBook"} isMobileView={isMobileView}></ContentHeader>
+      <ContentHeader text={'GuestBook'} isMobileView={isMobileView}></ContentHeader>
       <StyledGuestBookContent>
         <StyledContentSection>
           <StyledSectionTitle>
-            <Paragraph text={"방명록"} color={"black"} fontSize={"1.4rem"} fontWeight={"bold"}></Paragraph>
+            <Paragraph text={'방명록'} color={'black'} fontSize={'1.4rem'} fontWeight={'bold'}></Paragraph>
             <StyledHr />
           </StyledSectionTitle>
           <StyledArticle>
-            <WritePost />
-            <Post></Post>
-            <Post></Post>
+            <WritePostContainer />
             <Post></Post>
             <Post></Post>
             <Post></Post>

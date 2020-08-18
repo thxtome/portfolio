@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import Paragraph from "../common/Paragraph";
+import React from 'react';
+import styled from 'styled-components';
+import Paragraph from '../common/Paragraph';
 
 const StyledContactCard = styled.div`
   max-width: 340px;
@@ -10,7 +10,7 @@ const StyledContactCard = styled.div`
   display: flex;
   justify-content: flex-start;
   box-sizing: border-box;
-  align-items: flex-start;
+  align-items: center;
   padding: 10px;
   background: #26272b;
   margin: 0 0 20px 10px;
@@ -18,10 +18,10 @@ const StyledContactCard = styled.div`
 `;
 
 const StyledContactsImg = styled.img`
-  min-width: 60px;
-  min-height: 60px;
+  width: ${props => (props.isMobileView ? '40px' : '60px')};
+  height: ${props => (props.isMobileView ? '40px' : '60px')};
   box-sizing: border-box;
-  margin: 0 20px 0 10px;
+  margin: ${props => (props.isMobileView ? '0 10px 0 3px' : '0 20px 0 10px')};
 `;
 
 const StyledContactsTextBox = styled.div`
@@ -41,14 +41,14 @@ const StyledATag = styled.a`
   width: 100%;
 `;
 
-const ContactCard = ({ icon, title, text }) => {
+const ContactCard = ({ icon, title, text, isMobileView }) => {
   return (
     <StyledContactCard>
-      <StyledContactsImg src={icon} />
+      <StyledContactsImg src={icon} isMobileView={isMobileView} />
       <StyledContactsTextBox>
-        <Paragraph text={title} color={"white"} width={"90%"} textAlign={"start"}></Paragraph>
-        {title !== "Github" ? (
-          <Paragraph text={text} color={"white"} width={"90%"} fontSize={"0.8rem"} textAlign={"start"}></Paragraph>
+        <Paragraph text={title} color={'white'} width={'90%'} textAlign={'start'}></Paragraph>
+        {title !== 'Github' ? (
+          <Paragraph text={text} color={'white'} width={'90%'} fontSize={'0.8rem'} textAlign={'start'}></Paragraph>
         ) : (
           <StyledATag href={text}>{text}</StyledATag>
         )}

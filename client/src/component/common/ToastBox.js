@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import styled from "styled-components";
-import Toast from "./Toast";
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import styled from 'styled-components';
+import Toast from './Toast';
 
 const StyledToastBox = styled.div`
   position: fixed;
@@ -18,14 +18,15 @@ const useWindowSize = () => {
     function updateSize() {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     }
-    window.addEventListener("resize", updateSize);
+    window.addEventListener('resize', updateSize);
     updateSize();
-    return () => window.removeEventListener("resize", updateSize);
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
   return windowSize;
 };
 
 const ToastBox = ({ toasts, removeToast }) => {
+  console.log(toasts);
   const windowSize = useWindowSize();
   return (
     <StyledToastBox left={windowSize}>

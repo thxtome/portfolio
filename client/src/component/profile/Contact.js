@@ -198,7 +198,7 @@ const Contact = ({
         </StyledArticleContentBox>
         <StyledArticleContentBox width={'50%;'}>
           {contactOption.map((ele, index) => {
-            return <ContactCard {...ele} key={index}></ContactCard>;
+            return <ContactCard isMobileView={isMobileView} {...ele} key={index}></ContactCard>;
           })}
         </StyledArticleContentBox>
       </StyledArticle>

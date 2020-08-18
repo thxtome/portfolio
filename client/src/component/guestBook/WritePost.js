@@ -1,11 +1,13 @@
-import React, { useRef, useState } from "react";
-import styled from "styled-components";
-import Paragraph from "../common/Paragraph";
-import Textarea from "../common/Textarea";
-import IconButton from "../common/IconButton";
-import SaveSvg from "../../svg/guestbook/save.svg";
-import LockSvg from "../../svg/guestbook/lock.svg";
-import InputText from "../common/InputText";
+import React, { useRef, useState } from 'react';
+import styled from 'styled-components';
+import Paragraph from '../common/Paragraph';
+import Textarea from '../common/Textarea';
+import IconButton from '../common/IconButton';
+import SaveSvg from '../../svg/guestbook/save.svg';
+import LockSvg from '../../svg/guestbook/lock.svg';
+import InputText from '../common/InputText';
+import Button from '../common/Button';
+import { vaildDispacher } from '../../lib/validation';
 
 const StyledCard = styled.div`
   width: 320px;
@@ -53,6 +55,8 @@ const StyledButtonBox = styled.div`
   border-top: 1px solid #cdcdcd;
   align-self: center;
   padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const StyledButtons = styled.div`
@@ -62,30 +66,79 @@ const StyledButtons = styled.div`
   justify-content: space-between;
 `;
 
-const Post = ({ isMobileView }) => {
+const useInput = initVal => {
+  const [value, setValue] = useState(initVal);
+  const onChange = e => {
+    setValue(e.target.value);
+  };
+  return { value, onChange };
+};
+
+const Post = ({ isMobileView, addToast }) => {
   const [isSecret, setIsSecret] = useState(false);
+  const nickname = useInput(null);
+  const content = useInput(null);
+  const password = useInput(null);
+  const PostVaildTest = () => {
+    const items = [
+      { type: '닉네임', value: nickname.value, addToast: addToast, required: true },
+      { type: '내용', value: content.value, addToast: addToast, required: true },
+      { type: '비공개여부', value: isSecret, addToast: addToast, required: true },
+      { type: '비밀번호', value: password.value, addToast: addToast, required: true },
+    ];
+    return vaildDispacher(items);
+  };
   return (
     <StyledCard>
       <StyledTextBox>
-        <InputText text={"닉네입"} color={"black"} fontSize={"1rem"} fontWeight={"bold"} />
+        <InputText
+          text={'닉네임'}
+          color={'black'}
+          fontSize={'0.9rem'}
+          fontWeight={'bold'}
+          onchange={nickname.onChange}
+        />
       </StyledTextBox>
       <StyledTextBox>
-        <Paragraph text={"2020-08-15"} color={"black"} fontSize={"0.8rem"} />
+        <Paragraph text={'2020-08-15'} color={'black'} fontSize={'0.8rem'} margin={'0 0 0 5px'} />
       </StyledTextBox>
-      <StyledContentBox background={"#ddd"}>
-        <Textarea placeholder={"여기서부터 글이 시작됩니다."} color={"black"} fontSize={"1rem"} width={"100%"} />
+      <StyledContentBox background={'#ddd'}>
+        <Textarea
+          placeholder={'여기서부터 글이 시작됩니다.'}
+          color={'black'}
+          fontSize={'1rem'}
+          width={'100%'}
+          onchange={content.onChange}
+        />
         <StyledButtonBox>
+          <InputText
+            text={'비밀번호를 입력해주세요.'}
+            background={'none'}
+            height={'20px'}
+            color={'black'}
+            fontSize={'0.8rem'}
+            onchange={password.onChange}
+          ></InputText>
           <StyledButtons>
             <IconButton
               src={LockSvg}
-              width={"18px"}
-              height={"18px"}
+              width={'18px'}
+              height={'18px'}
               onclick={() => {
                 setIsSecret(!isSecret);
               }}
-              background={isSecret ? "#47ff368a" : ""}
+              background={isSecret ? '#47ff368a' : ''}
             ></IconButton>
-            <IconButton src={SaveSvg} width={"18px"} height={"18px"}></IconButton>
+            <IconButton
+              src={SaveSvg}
+              width={'18px'}
+              height={'18px'}
+              onclick={() => {
+                PostVaildTest();
+              }}
+            >
+              <StyledButtons></StyledButtons>
+            </IconButton>
           </StyledButtons>
         </StyledButtonBox>
       </StyledContentBox>

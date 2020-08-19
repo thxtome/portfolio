@@ -5,14 +5,12 @@ import DesktopItem from './DesktopItem';
 import ProgramBox from './ProgramBox';
 
 const StyledDesktop = styled.main`
-width: 100%;
-height: ${props => (props.windowSize ? `${props.windowSize.height - 60}px` : '100%')};
-background: black;
-display: grid;
-grid-template: repeat(auto-fill, 120px) / repeat(auto-fill, 120px);
-grid-gap: 3px;
-padding 3px;
-box-sizing: border-box;
+  width: 100%;
+  height: ${props => (props.windowSize ? `${props.windowSize.height - 60}px` : '100%')};
+  background: black;
+  display: grid;
+  grid-template: repeat(auto-fill, 120px) / repeat(auto-fill, 120px);
+  grid-gap: 3px;
 `;
 
 const useWindowSize = () => {

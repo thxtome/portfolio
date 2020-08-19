@@ -202,7 +202,6 @@ const Project = ({ isMobileView }) => {
   project[1].ref = useRef();
   project[2].ref = useRef();
   const refs = [project[0].ref, project[1].ref, project[2].ref];
-  console.log(project[0].ref.current ? project[0].ref.current.clientHeight : "");
   return (
     <StyledProject>
       <ContentHeader

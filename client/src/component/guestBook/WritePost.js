@@ -83,10 +83,12 @@ const Post = ({ isMobileView, addToast }) => {
     const items = [
       { type: '닉네임', value: nickname.value, addToast: addToast, required: true },
       { type: '내용', value: content.value, addToast: addToast, required: true },
-      { type: '비공개여부', value: isSecret, addToast: addToast, required: true },
       { type: '비밀번호', value: password.value, addToast: addToast, required: true },
     ];
     return vaildDispacher(items);
+  };
+  const sendPost = () => {
+    let post = { nickname: nickname.value, content: content.value, password: password.value, isSecret };
   };
   return (
     <StyledCard>
@@ -97,6 +99,7 @@ const Post = ({ isMobileView, addToast }) => {
           fontSize={'0.9rem'}
           fontWeight={'bold'}
           onchange={nickname.onChange}
+          maxLength={10}
         />
       </StyledTextBox>
       <StyledTextBox>
@@ -109,15 +112,18 @@ const Post = ({ isMobileView, addToast }) => {
           fontSize={'1rem'}
           width={'100%'}
           onchange={content.onChange}
+          maxLength={100}
         />
         <StyledButtonBox>
           <InputText
             text={'비밀번호를 입력해주세요.'}
+            type={'password'}
             background={'none'}
             height={'20px'}
             color={'black'}
             fontSize={'0.8rem'}
             onchange={password.onChange}
+            maxLength={20}
           ></InputText>
           <StyledButtons>
             <IconButton
@@ -135,6 +141,7 @@ const Post = ({ isMobileView, addToast }) => {
               height={'18px'}
               onclick={() => {
                 PostVaildTest();
+                sendPost();
               }}
             >
               <StyledButtons></StyledButtons>

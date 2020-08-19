@@ -12,7 +12,6 @@ const StyledCalendarContent = styled.div`
 `;
 
 const makeDateContent = (year, month, day, isCurrentYandM) => {
-  console.log(isCurrentYandM, day);
   const dates = [];
   const firstDay = new Date(year, month - 1, 1).getDay();
   const lastDate = new Date(year, month, 0).getDate() - 1;

@@ -104,7 +104,6 @@ const Egaccount = ({ isMobileView }) => {
         </StyledArticleContentBox>
         <StyledArticleContentBox width={"50%;"} display={"block"}>
           {doublecomeText.map((text, index) => {
-            console.log(text);
             if (text === null) {
               return <br />;
             }

@@ -91,6 +91,7 @@ const ProgramBox = ({
   const boxRef = useRef();
   const [resizeMode, setResizeMode] = useState('default');
   const isMobileView = size.width < 764;
+  const maximizedSize = { width: windowSize.width - 2, height: isMobile ? windowSize.height : windowSize.height - 60 };
   const divStyle = {
     position: 'absolute',
     top: location.top,
@@ -132,11 +133,12 @@ const ProgramBox = ({
     if (isMaximized) {
       changeWindowSize({
         size: {
-          height: windowSize.height - 60,
-          width: windowSize.width,
+          height: maximizedSize.height,
+          width: maximizedSize.width,
         },
         target: type,
       });
+      return;
     }
 
     if (windowSize.height < size.height + 60 || windowSize.width < size.width) {
@@ -161,8 +163,8 @@ const ProgramBox = ({
     if (isMaximized) {
       changeWindowSize({
         size: {
-          height: windowSize.height - 60,
-          width: windowSize.width,
+          height: maximizedSize.height,
+          width: maximizedSize.width,
         },
         target: type,
       });

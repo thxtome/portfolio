@@ -110,9 +110,6 @@ const WhoAmI = ({ isMobileView, refs }) => {
             <StyledProfileCardImg
               isMobileView={isMobileView}
               src={Face}
-              onLoad={() => {
-                console.log("load");
-              }}
             ></StyledProfileCardImg>
             <StyledProfileCardTextBox>
               {profileText.map((text, index) => {

@@ -24,7 +24,6 @@ const calMonth = (year, month) => {
     nextYear = year + 1;
     nextMonth = 1;
   }
-  console.log(nextYear, nextMonth);
   return { nextYear, nextMonth };
 };
 

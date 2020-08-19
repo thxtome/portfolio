@@ -67,7 +67,6 @@ const ContentHeader = ({ text, contents, isMobileView, refs }) => {
                 key={index}
                 onClick={(e) => {
                   if (refs[index].current) {
-                    console.log(refs[index].current.offsetTop);
                     e.target.parentNode.parentNode.parentNode.scrollTo({
                       top: refs[index].current.offsetTop + 190,
                       left: 0,

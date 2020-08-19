@@ -5,7 +5,7 @@ import Toast from './Toast';
 const StyledToastBox = styled.div`
   position: fixed;
   top: 50px;
-  width: 300px;
+  width: 270px;
   height: max-content;
   right: 30px;
   z-index: ${Number.MAX_SAFE_INTEGER};
@@ -26,7 +26,6 @@ const useWindowSize = () => {
 };
 
 const ToastBox = ({ toasts, removeToast }) => {
-  console.log(toasts);
   const windowSize = useWindowSize();
   return (
     <StyledToastBox left={windowSize}>

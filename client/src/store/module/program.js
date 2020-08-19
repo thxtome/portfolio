@@ -174,7 +174,6 @@ const reducer = createReducer(initialState, {
   },
 
   [OPEN_LOADING_CLOCK]: (state, action) => {
-    console.log(action.payload.target);
     const target = _.cloneDeep(state[action.payload.target]);
     target.isLoading = true;
     const programs = { ...state };

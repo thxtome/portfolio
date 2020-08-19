@@ -21,7 +21,6 @@ const reducer = createReducer(initialState, {
   },
 
   [REMOVE_TOAST]: (state, action) => {
-    console.log(action.payload);
     let toasts = _.cloneDeep(state.toasts);
     return {
       ...state,

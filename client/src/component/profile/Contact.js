@@ -85,7 +85,10 @@ const useInput = initVal => {
   const onChange = e => {
     setValue(e.target.value);
   };
-  return { value, onChange };
+  const clearVlaue = () => {
+    setValue(null);
+  };
+  return { value, onChange, clearVlaue };
 };
 
 const Contact = ({
@@ -103,20 +106,35 @@ const Contact = ({
   const senderPnum = useInput(null);
   const content = useInput(null);
 
-  const messageVaildTest = () => {
-    const items = [
-      { type: '이름', value: senderName.value, addToast: addToast, required: true },
-      { type: '이메일', value: senderEmail.value, addToast: addToast, required: true },
-      { type: '핸드폰번호', value: senderPnum.value, addToast: addToast, required: true },
-      { type: '내용', value: content.value, addToast: addToast, required: true },
-    ];
-    return vaildDispacher(items);
+  const messageInputs = [
+    { input: senderName, type: '이름', required: true },
+    { input: senderEmail, type: '이메일', required: true },
+    { input: senderPnum, type: '핸드폰번호', required: true },
+    { input: content, type: '내용', required: true },
+  ];
+
+  const clearMessageInputs = () => {
+    messageInputs.forEach(({ input }) => {
+      input.clearVlaue();
+    });
   };
+
+  const messageVaildTest = () => {
+    return vaildDispacher(
+      messageInputs.map(input => {
+        return { ...input };
+      }),
+      addToast,
+    );
+  };
+
+  const messageValueReset = () => {};
 
   useEffect(() => {
     if (isSendMessageSucceed) {
       ClearMessageSendSucceed();
       addToast({ text: '메세지를 전송하였습니다.', type: 'info' });
+      clearMessageInputs();
       closeLoadingClock();
     }
   }, [isSendMessageSucceed]);

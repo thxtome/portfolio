@@ -1,12 +1,12 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
-import styled from "styled-components";
-import Activation from "./Activation";
-import DesktopItem from "./DesktopItem";
-import ProgramBox from "./ProgramBox";
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import styled from 'styled-components';
+import Activation from './Activation';
+import DesktopItem from './DesktopItem';
+import ProgramBox from './ProgramBox';
 
 const StyledDesktop = styled.main`
 width: 100%;
-height: ${(props) => (props.windowSize ? `${props.windowSize.height - 60}px` : "100%")};
+height: ${props => (props.windowSize ? `${props.windowSize.height - 60}px` : '100%')};
 background: black;
 display: grid;
 grid-template: repeat(auto-fill, 120px) / repeat(auto-fill, 120px);
@@ -19,11 +19,11 @@ const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState([0, 0]);
   useLayoutEffect(() => {
     function updateSize() {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      setWindowSize({ width: document.documentElement.clientWidth, height: document.documentElement.clientHeight });
     }
-    window.addEventListener("resize", updateSize);
+    window.addEventListener('resize', updateSize);
     updateSize();
-    return () => window.removeEventListener("resize", updateSize);
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
   return windowSize;
 };
@@ -68,7 +68,7 @@ function Desktop({
           ondoubleclick={() => {
             openWindow({ target: program.type });
           }}
-          onkeydown={(e) => {
+          onkeydown={e => {
             if (e.keyCode == 13) {
               openWindow({ target: program.type });
             }

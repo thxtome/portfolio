@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostRepository {
-	
+
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -22,7 +22,7 @@ public class PostRepository {
 		return em.find(Post.class, id);
 	}
 	
-	public List<Post> findAll() {
-		return em.createQuery("select p from post p",Post.class).getResultList();
+	public List<Post> findAll(Integer page) {
+		return em.createQuery("select p from Post p order by postDate desc",Post.class).setFirstResult(page*15).setMaxResults(15).getResultList();
 	}
 }

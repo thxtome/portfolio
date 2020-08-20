@@ -1,7 +1,5 @@
 package com.jparkportfolio.post;
 
-import javax.mail.MessagingException;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +16,18 @@ public class PostController {
 	private final PostService postService;
 	
 	@PostMapping("post")
-	public ResponseResult createPost(@RequestBody Post message) {
-		return postService.createPost(message);
+	public ResponseResult createPost(@RequestBody Post post) {
+		System.out.println(post);
+		return postService.createPost(post);
 	}
 	
 	@GetMapping("post")
-	public ResponseResult retreivePost(){
-		return postService.retrievePost();
+	public ResponseResult retreivePost(Integer page){
+		return postService.retrievePost(page);
+	}
+	
+	@PostMapping("confirmPassword")
+	public ResponseResult confirmPostPassword(@RequestBody Post post){
+		return postService.confirmPostPassword(post);
 	}
 }

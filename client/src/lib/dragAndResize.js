@@ -6,7 +6,7 @@ const minMaxOrValue = (min, max, value) => {
 };
 
 const calSizeWhenWindowResize = ({
-  maximizedSize: { maxWidth, maxHeight },
+  maximizedSize: { width: maxWidth, height: maxHeight },
   size: { width: prevWidth, height: prevHeight },
   isMaximized,
 }) => {
@@ -52,7 +52,7 @@ const calSizeWhenResizing = ({
   let currentMaximumHeight;
 
   const eastMaximumWidth = maxWidth - left - 8;
-  const southMaximumHeight = maxWidth - left - 8;
+  const southMaximumHeight = maxHeight - top - 5;
 
   switch (resizeMode) {
     case 'e':

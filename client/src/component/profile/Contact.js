@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import Paragraph from '../common/Paragraph';
 import InputText from '../common/InputText';
 import Textarea from '../common/Textarea';
 import Button from '../common/Button';
+import Form from '../common/Form';
 import ContactCard from './ContactCard';
 import GithubIcon from '../../svg/contact/github.svg';
 import EmailIcon from '../../svg/contact/email.svg';
@@ -85,10 +86,26 @@ const useInput = initVal => {
   const onChange = e => {
     setValue(e.target.value);
   };
-  const clearVlaue = () => {
+  const clearValue = () => {
     setValue(null);
   };
-  return { value, onChange, clearVlaue };
+  return { value, onChange, clearValue };
+};
+
+const clearMessageInputs = (formRef, messageInputs) => {
+  formRef.current.reset();
+  messageInputs.forEach(({ input }) => {
+    input.clearValue();
+  });
+};
+
+const messageVaildTest = (messageInputs, addToast) => {
+  return vaildDispacher(
+    messageInputs.map(input => {
+      return { ...input };
+    }),
+    addToast,
+  );
 };
 
 const Contact = ({
@@ -105,6 +122,7 @@ const Contact = ({
   const senderEmail = useInput(null);
   const senderPnum = useInput(null);
   const content = useInput(null);
+  const formRef = useRef();
 
   const messageInputs = [
     { input: senderName, type: '이름', required: true },
@@ -113,28 +131,11 @@ const Contact = ({
     { input: content, type: '내용', required: true },
   ];
 
-  const clearMessageInputs = () => {
-    messageInputs.forEach(({ input }) => {
-      input.clearVlaue();
-    });
-  };
-
-  const messageVaildTest = () => {
-    return vaildDispacher(
-      messageInputs.map(input => {
-        return { ...input };
-      }),
-      addToast,
-    );
-  };
-
-  const messageValueReset = () => {};
-
   useEffect(() => {
     if (isSendMessageSucceed) {
       ClearMessageSendSucceed();
       addToast({ text: '메세지를 전송하였습니다.', type: 'info' });
-      clearMessageInputs();
+      clearMessageInputs(formRef, messageInputs);
       closeLoadingClock();
     }
   }, [isSendMessageSucceed]);
@@ -147,72 +148,71 @@ const Contact = ({
       </StyledSectionTitle>
       <StyledArticle isMobileView={isMobileView}>
         <StyledArticleContentBox width={'50%;'}>
-          <StyledContactMessageBox>
-            <InputText
-              width={'80%'}
-              margin={'30px 0 0 0'}
-              text={'성함'}
-              background={'#fff'}
-              fontSize={'0.8rem'}
-              color={'black'}
-              maxLength={'10'}
-              onchange={senderName.onChange}
-            />
-            <InputText
-              width={'80%'}
-              margin={'15px 0 0 0'}
-              text={'이메일'}
-              fontSize={'0.8rem'}
-              color={'black'}
-              type={'email'}
-              required={true}
-              maxLength={'50'}
-              onchange={senderEmail.onChange}
-            />
-            <InputText
-              width={'80%'}
-              margin={'15px 0 0 0'}
-              text={'전화번호'}
-              fontSize={'0.8rem'}
-              color={'black'}
-              type={'tel'}
-              required={true}
-              maxLength={'13'}
-              onchange={senderPnum.onChange}
-              pattern={'[0-9]{10}'}
-            />
-            <Textarea
-              width={'80%'}
-              margin={'15px 0 0 0'}
-              background={'#fff'}
-              minHeight={'100px'}
-              resize={'none'}
-              placeholder={'메세지를 입력하세요.'}
-              maxLength={'1000'}
-              onchange={content.onChange}
-            />
-            <Button
-              text={'SEND'}
-              width={'80%'}
-              height={'30px'}
-              margin={'15px 0 30px 0'}
-              background={'#43399a'}
-              color={'white'}
-              hover={'#332a80'}
-              onclick={() => {
-                if (!messageVaildTest()) {
-                  return;
-                }
-                sendContactMessage({
-                  senderName: senderName.value,
-                  senderEmail: senderEmail.value,
-                  senderPnum: senderPnum.value,
-                  content: content.value,
-                });
-                openLoadingClock();
-              }}
-            ></Button>
-          </StyledContactMessageBox>
+          <Form ref={formRef}>
+            <StyledContactMessageBox>
+              <InputText
+                width={'80%'}
+                margin={'30px 0 0 0'}
+                text={'성함'}
+                background={'#fff'}
+                fontSize={'0.8rem'}
+                color={'black'}
+                maxLength={'10'}
+                onchange={senderName.onChange}
+              />
+              <InputText
+                width={'80%'}
+                margin={'15px 0 0 0'}
+                text={'이메일'}
+                fontSize={'0.8rem'}
+                color={'black'}
+                required={true}
+                maxLength={'50'}
+                onchange={senderEmail.onChange}
+              />
+              <InputText
+                width={'80%'}
+                margin={'15px 0 0 0'}
+                text={'전화번호'}
+                fontSize={'0.8rem'}
+                color={'black'}
+                required={true}
+                maxLength={'13'}
+                onchange={senderPnum.onChange}
+              />
+              <Textarea
+                width={'80%'}
+                margin={'15px 0 0 0'}
+                background={'#fff'}
+                minHeight={'100px'}
+                resize={'none'}
+                placeholder={'메세지를 입력하세요.'}
+                maxLength={'1000'}
+                onchange={content.onChange}
+              />
+              <Button
+                text={'SEND'}
+                width={'80%'}
+                height={'30px'}
+                margin={'15px 0 30px 0'}
+                background={'#43399a'}
+                color={'white'}
+                hover={'#332a80'}
+                onclick={() => {
+                  if (!messageVaildTest(messageInputs, addToast)) {
+                    return;
+                  }
+                  sendContactMessage({
+                    senderName: senderName.value,
+                    senderEmail: senderEmail.value,
+                    senderPnum: senderPnum.value,
+                    content: content.value,
+                  });
+                  openLoadingClock();
+                }}
+              ></Button>
+            </StyledContactMessageBox>
+          </Form>
         </StyledArticleContentBox>
         <StyledArticleContentBox width={'50%;'}>
           {contactOption.map((ele, index) => {

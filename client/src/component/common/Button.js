@@ -26,14 +26,14 @@ const StyledButton = styled.button`
   &:hover {
     cursor: pointer;
     transition: 0.3s;
-    background: ${(props) => (props.hover ? props.hover : "none")};
+    background: ${props => (props.hover ? props.hover : 'none')};
   }
 `;
 
 const Button = ({ text, onclick, ...rest }) => {
   return (
-    <StyledButton {...rest} onClick={onclick ? onclick : () => {}}>
-      {text ? text : " "}
+    <StyledButton type={'button'} {...rest} onClick={onclick ? onclick : () => {}}>
+      {text ? text : ' '}
     </StyledButton>
   );
 };

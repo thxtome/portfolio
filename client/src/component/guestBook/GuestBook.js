@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ContentFooter from '../common/ContentFooter';
 import ContentHeader from '../common/ContentHeader';
 import Paragraph from '../common/Paragraph';
-import WritePost from './WritePost';
-import Post from './Post';
-import WritePostContainer from '../../container/guestBook/WritePostContainer';
+import Posts from '../../container/guestBook/PostsContainer';
 
 const StyledGuestBook = styled.div`
   width: 100%;
@@ -56,30 +54,22 @@ const StyledHr = styled.hr`
   align-self: center;
 `;
 
-const StyledArticle = styled.article`
-  width: 100%;
-  max-width: 1120px;
-  height: max-content;
-  display: flex;
-  box-sizing: border-box;
-  padding: ${props => (props.isMobileView ? '15px 0 0 0' : '30px 5px 0 5px')};
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: flex-start;
-`;
-const StyledEmptyPost = styled.article`
-  width: 320px;
-  min-width: 240px;
-  padding: 0;
-  margin: 0;
-  min-height: 0px;
-  height: 0px;
-  border: 0px;
-`;
-
 const GuestBook = ({ isMobileView }) => {
+  const [isRequiredLoad, setIsRequiredLoad] = useState(false);
+  const handleScroll = e => {
+    if (e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 350) {
+      if (!isRequiredLoad) {
+        setIsRequiredLoad(true);
+      }
+    }
+  };
+  
   return (
-    <StyledGuestBook>
+    <StyledGuestBook
+      onScroll={e => {
+        handleScroll(e);
+      }}
+    >
       <ContentHeader text={'GuestBook'} isMobileView={isMobileView}></ContentHeader>
       <StyledGuestBookContent>
         <StyledContentSection>
@@ -87,16 +77,7 @@ const GuestBook = ({ isMobileView }) => {
             <Paragraph text={'방명록'} color={'black'} fontSize={'1.4rem'} fontWeight={'bold'}></Paragraph>
             <StyledHr />
           </StyledSectionTitle>
-          <StyledArticle>
-            <WritePostContainer />
-            <Post></Post>
-            <Post></Post>
-            <Post></Post>
-            <Post></Post>
-            <Post></Post>
-            <StyledEmptyPost></StyledEmptyPost>
-            <StyledEmptyPost></StyledEmptyPost>
-          </StyledArticle>
+          <Posts isRequiredLoad={isRequiredLoad} setIsRequiredLoad={setIsRequiredLoad}></Posts>
         </StyledContentSection>
       </StyledGuestBookContent>
       <ContentFooter></ContentFooter>

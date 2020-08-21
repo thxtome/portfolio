@@ -12,8 +12,19 @@ const mapStateToProps = state => {
     isGettingPostsSucceed,
     isGettingPostsFailed,
     isLast,
+    isConfirmingPasswordSucceed,
+    isConfirmingPasswordFailed,
   } = state.postReducer;
-  return { isAddingPostSucceed, isAddingPostFailed, posts, isGettingPostsSucceed, isGettingPostsFailed, isLast };
+  return {
+    isAddingPostSucceed,
+    isAddingPostFailed,
+    posts,
+    isGettingPostsSucceed,
+    isGettingPostsFailed,
+    isLast,
+    isConfirmingPasswordSucceed,
+    isConfirmingPasswordFailed,
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -27,12 +38,14 @@ const mapDispatchToProps = dispatch => {
     closeLoadingClock: () => {
       dispatch(programActions.CLOSE_LOADING_CLOCK({ target: 'guestBook' }));
     },
+
     addPostRequest: post => {
       dispatch(postActions.ADD_POST(post));
     },
     clearAddingPostResult: () => {
       dispatch(postActions.CLEAR_ADDING_POST_RESULT());
     },
+
     getPostsRequest: page => {
       dispatch(postActions.GET_POSTS(page));
     },
@@ -42,11 +55,26 @@ const mapDispatchToProps = dispatch => {
     clearGettingPostResult: () => {
       dispatch(postActions.CLEAR_GETTING_POST_RESULT());
     },
+
     confirmPostPassword: ({ id, password }) => {
       dispatch(postActions.CONFIRM_PASSWORD({ id, password }));
     },
     clearConfirmPasswordResult: id => {
       dispatch(postActions.CLEAR_CONFIRMING_PASSWORD_RESULT(id));
+    },
+
+    modifyPostRequest: post => {
+      dispatch(postActions.MODIFY_POST(post));
+    },
+    clearModifingPostResult: () => {
+      dispatch(postActions.CLEAR_MODIFING_POST_RESULT());
+    },
+
+    deletePostRequest: postId => {
+      dispatch(postActions.DELETE_POST(postId));
+    },
+    clearDeletingPostResult: () => {
+      dispatch(postActions.CLEAR_DELETING_POST_RESULT());
     },
   };
 };

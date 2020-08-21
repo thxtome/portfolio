@@ -18,8 +18,7 @@ public class PostService {
 	private final PostRepository postRepository;
 
 	public ResponseResult createPost(Post post) {
-		postRepository.save(post);
-		return new ResponseResult(HttpStatus.OK, "post is created");
+		return new ResponseResult(HttpStatus.OK, postRepository.save(post).createDto(true), "post");
 	}
 
 	public ResponseResult retrievePost(Integer page) {
@@ -35,5 +34,15 @@ public class PostService {
 		ResponseResult rr = new ResponseResult(HttpStatus.OK, postDto, "post");
 		rr.add("result", result);
 		return rr;
+	}
+
+	public ResponseResult deletePost(Long postId) {
+		Post deletedPost = postRepository.deleteById(postId);
+		return new ResponseResult(HttpStatus.OK, deletedPost.createDto(true), "post");
+	}
+
+	public ResponseResult updatePost(Post post) {
+		postRepository.updateById(post);
+		return new ResponseResult(HttpStatus.OK, post.createDto(false), "post");
 	}
 }

@@ -27,6 +27,10 @@ public class Post {
 		this.isLocked = isLocked;
 	}
 	
+	public boolean getIsLocked() {
+		return this.isLocked;
+	}
+	
 	public boolean confirmPassword(Post post) {
 		return this.password.equals(post.password);
 	}

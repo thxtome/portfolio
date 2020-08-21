@@ -51,15 +51,39 @@ const Posts = ({
 
   confirmPostPassword,
   clearConfirmPasswordResult,
+  isConfirmingPasswordSucceed,
+  isConfirmingPasswordFailed,
+
+  modifyPostRequest,
+  clearModifingPostResult,
+  isModifingPostSucceed,
+  isModifingPostFailed,
+
+  deletePostRequest,
+  isDeletingPostSucceed,
+  isDeletingPostFailed,
+  clearDeletingPostResult,
 }) => {
   const writeProps = {
     addToast,
     addPostRequest,
+    clearAddingPostResult,
     isAddingPostSucceed,
     isAddingPostFailed,
     openLoadingClock,
     closeLoadingClock,
-    clearAddingPostResult,
+  };
+
+  const postProps = {
+    addToast,
+    confirmPostPassword,
+    clearConfirmPasswordResult,
+    openLoadingClock,
+    closeLoadingClock,
+    modifyPostRequest,
+    clearModifingPostResult,
+    deletePostRequest,
+    clearDeletingPostResult,
   };
 
   const [page, setPage] = useState(0);
@@ -85,6 +109,10 @@ const Posts = ({
   }, [isGettingPostsSucceed, isGettingPostsFailed]);
 
   useEffect(() => {
+    closeLoadingClock();
+  }, [isConfirmingPasswordSucceed, isConfirmingPasswordFailed]);
+
+  useEffect(() => {
     if (isRequiredLoad && !isLast) {
       getPosts(getPostsRequest, openLoadingClock, setPage, page);
     }
@@ -93,17 +121,7 @@ const Posts = ({
   return (
     <StyledPosts>
       <WritePost {...writeProps} />
-      {posts &&
-        posts.map((post, index) => (
-          <Post
-            {...post}
-            confirmPostPassword={confirmPostPassword}
-            addToast={addToast}
-            openLoadingClock={openLoadingClock}
-            clearConfirmPasswordResult={clearConfirmPasswordResult}
-            key={index}
-          />
-        ))}
+      {posts && posts.map(post => <Post {...post} {...postProps} key={post.id} />)}
       <StyledEmptyPost></StyledEmptyPost>
       <StyledEmptyPost></StyledEmptyPost>
     </StyledPosts>

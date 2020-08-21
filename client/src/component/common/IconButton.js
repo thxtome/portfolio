@@ -8,6 +8,7 @@ const StyledIconButton = styled.div`
   background: ${props => (props.background ? props.background : 'none')};
   border: ${props => (props.border ? props.border : 'none')};
   border-radius: ${props => (props.borderRadius ? props.borderRadius : 'none')};
+  margin: ${props => (props.margin ? props.margin : 'none')};
 
   &:focus {
     border: none;

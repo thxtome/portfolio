@@ -61,7 +61,7 @@ const StyledButtonBox = styled.div`
 `;
 
 const StyledButtons = styled.div`
-  width: 70px;
+  width: max-content;
   height: 30px;
   display: flex;
   justify-content: space-between;
@@ -78,6 +78,8 @@ const StyledPasswordBox = styled.div`
   overflow: hidden;
 `;
 
+const iconButtonStyle = { width: '18px', height: '18px', margin: '0 10px 0 0' };
+
 const useInput = initVal => {
   const [value, setValue] = useState(initVal);
   const onChange = e => {
@@ -86,7 +88,26 @@ const useInput = initVal => {
   const clearValue = e => {
     setValue(null);
   };
-  return { value, onChange, clearValue };
+  const changeValue = value => {
+    setValue(value);
+  };
+  return { value, onChange, clearValue, changeValue };
+};
+
+const clearPostInputs = (formRef, postInputs) => {
+  formRef.current.reset();
+  postInputs.forEach(({ input }) => {
+    input.clearValue();
+  });
+};
+
+const postVaildTest = (postInputs, addToast) => {
+  return vaildDispacher(
+    postInputs.map(input => {
+      return { ...input };
+    }),
+    addToast,
+  );
 };
 
 const clearpasswordInputs = (formRef, passwordInputs) => {
@@ -116,30 +137,60 @@ const Post = ({
   content,
   nickname,
   postDate,
+  isLocked,
   confirmPostPassword,
   addToast,
   openLoadingClock,
   isPasswordCorrect,
   clearConfirmPasswordResult,
+  modifyPostRequest,
+  clearModifingPostResult,
+  deletePostRequest,
+  clearDeletingPostResult,
 }) => {
   const [isModifing, setIsModifing] = useState(false);
-  const [isSecret, setIsSecret] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+  const [isUnlock, setIsUnlock] = useState(false);
   const [action, setAction] = useState(null);
   const password = useInput(null);
+  const modifiedContent = useInput(null);
   const passwordInputs = [{ input: password, type: '비밀번호', required: true }];
   const formRef = useRef();
+  const postInputs = [{ input: modifiedContent, type: '내용', required: true }];
+
+  const modifyPost = (postInputs, addToast, { id, content, isLocked, nickname, postDate }) => {
+    if (!postVaildTest(postInputs, addToast)) {
+      return;
+    }
+    modifyPostRequest({ id, content, isLocked, nickname, postDate });
+    setIsModifing(false);
+  };
+
+  const handleClickBtn = action => {
+    if (isUnlock) {
+      actionDispacher(action);
+    } else {
+      setIsPasswordOpen(!isPasswordOpen);
+      setAction(action);
+    }
+  };
 
   const actionDispacher = action => {
     switch (action) {
       case 'unlock':
-        break;
+        return;
 
       case 'modify':
         setIsModifing(true);
+        modifiedContent.changeValue(content);
         break;
 
       case 'delete':
+        deletePostRequest(id);
+        break;
+
+      case 'save':
+        modifyPost(postInputs, addToast, { id, content: modifiedContent.value, isLocked, nickname, postDate });
         break;
 
       default:
@@ -153,8 +204,7 @@ const Post = ({
     }
 
     if (isPasswordCorrect) {
-      setIsPasswordOpen(false);
-      actionDispacher(action);
+      setIsUnlock(true);
     } else {
       addToast({ text: '비밀번호가 맞지 않습니다.', type: 'error' });
     }
@@ -162,6 +212,13 @@ const Post = ({
     clearConfirmPasswordResult(id);
     clearpasswordInputs(formRef, passwordInputs);
   }, [isPasswordCorrect]);
+
+  useEffect(() => {
+    if (isUnlock) {
+      setIsPasswordOpen(false);
+      actionDispacher(action);
+    }
+  }, [isUnlock]);
 
   return (
     <StyledCard>
@@ -173,13 +230,14 @@ const Post = ({
           <Paragraph text={postDateFormat(postDate)} color={'black'} fontSize={'0.8rem'} />
         </StyledTextBox>
         <StyledContentBox background={'#ddd'}>
-          {isModifing ? (
+          {isModifing && isUnlock ? (
             <Textarea
               placeholder={'여기서부터 글이 시작됩니다.'}
               color={'black'}
               fontSize={'1rem'}
               width={'100%'}
               defaultValue={content}
+              onchange={modifiedContent.onChange}
             />
           ) : (
             <Paragraph
@@ -194,41 +252,39 @@ const Post = ({
 
           <StyledButtonBox>
             <StyledButtons>
-              {isModifing ? (
+              {isModifing && isUnlock ? (
                 <IconButton
-                  src={isModifing ? SaveSvg : PencilSvg}
-                  width={'18px'}
-                  height={'18px'}
-                  onclick={() => {}}
+                  src={SaveSvg}
+                  {...iconButtonStyle}
+                  onclick={() => {
+                    handleClickBtn('save');
+                  }}
                 ></IconButton>
               ) : (
                 <>
-                  <IconButton
-                    src={LockSvg}
-                    width={'18px'}
-                    height={'18px'}
-                    onclick={() => {
-                      setIsPasswordOpen(!isPasswordOpen);
-                      setAction('lock');
-                    }}
-                    background={isSecret ? '#47ff368a' : ''}
-                  ></IconButton>
+                  {isLocked && !isUnlock ? (
+                    <IconButton
+                      src={LockSvg}
+                      {...iconButtonStyle}
+                      onclick={() => {
+                        handleClickBtn('lock');
+                      }}
+                    ></IconButton>
+                  ) : (
+                    ''
+                  )}
                   <IconButton
                     src={PencilSvg}
-                    width={'18px'}
-                    height={'18px'}
+                    {...iconButtonStyle}
                     onclick={() => {
-                      setIsPasswordOpen(!isPasswordOpen);
-                      setAction('modify');
+                      handleClickBtn('modify');
                     }}
                   ></IconButton>
                   <IconButton
                     src={TrashSvg}
-                    width={'18px'}
-                    height={'18px'}
+                    {...iconButtonStyle}
                     onclick={() => {
-                      setIsPasswordOpen(!isPasswordOpen);
-                      setAction('delete');
+                      handleClickBtn('delete');
                     }}
                   ></IconButton>
                 </>

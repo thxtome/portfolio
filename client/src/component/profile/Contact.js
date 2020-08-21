@@ -148,7 +148,7 @@ const Contact = ({
       </StyledSectionTitle>
       <StyledArticle isMobileView={isMobileView}>
         <StyledArticleContentBox width={'50%;'}>
-          <Form ref={formRef}>
+          <Form ref={formRef} width={'none'}>
             <StyledContactMessageBox>
               <InputText
                 width={'80%'}

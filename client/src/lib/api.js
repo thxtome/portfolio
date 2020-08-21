@@ -25,6 +25,22 @@ export const getPostRequest = page => {
   });
 };
 
+export const updatePostRequest = post => {
+  return axios({
+    method: 'put',
+    url: `${url}/post`,
+    data: post,
+  });
+};
+
+export const deletePostRequest = postId => {
+  return axios({
+    method: 'delete',
+    url: `${url}/post?id=${postId}`,
+    data: { lid: postId },
+  });
+};
+
 export const confirmPasswordRequest = ({ id, password }) => {
   return axios({
     method: 'post',

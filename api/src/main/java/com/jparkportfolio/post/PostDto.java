@@ -14,4 +14,11 @@ public class PostDto {
 	private boolean isLocked;
 	private String password;
 	private LocalDateTime postDate;
+	
+	public void setIsLocked(boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+	public boolean getIsLocked() {
+		return this.isLocked;
+	}
 }

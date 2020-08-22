@@ -117,7 +117,6 @@ const egaccountText = [
   null,
   "필요한 회계항목을 입력하고 차변과 대변을 한번에 입력할 수 있게 ",
   "만든 단축전표가 핵심 항목입니다.",
-  "현재 회사에서 사용중인 관계로 시연 영상만 올리도록 하겠습니다.",
   null,
 ];
 
@@ -165,7 +164,6 @@ const doublecomeBtns = [
 ];
 
 const egaccountBtns = [
-  { type: "youtube", url: "https://www.youtube.com/watch?v=j1gPvZifyS0", style: BtnStyle.youtube },
 ];
 
 const momatoBtns = [

@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import Paragraph from "../common/Paragraph";
-import ClockLoader from "react-spinners/ClockLoader";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import Paragraph from '../common/Paragraph';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const StyledPowerOn = styled.div`
   width: 100%;
@@ -20,17 +20,17 @@ function PowerOn({ unmountPowerScreen }) {
   useEffect(() => {
     let key = setTimeout(() => {
       unmountPowerScreen();
-    }, 1);
+    }, 1000);
     return () => {
       clearTimeout(key);
     };
   }, []);
   return (
     <StyledPowerOn>
-      <Paragraph fontSize={"5rem"} width={"100%"}>
+      <Paragraph fontSize={'5rem'} width={'100%'}>
         사용자 화면 구성중
       </Paragraph>
-      <ClockLoader size={150} color={"gray"} loading={true} />
+      <ClockLoader size={150} color={'gray'} loading={true} />
     </StyledPowerOn>
   );
 }

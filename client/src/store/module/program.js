@@ -43,10 +43,8 @@ const initialState = {
     text: '프로필',
     isMinimized: false,
     isMaximized: true,
-    size: { width: 800, height: 400 },
-    prevSize: { width: 350, height: 500 },
-    location: { top: 100, left: 100 },
-    prevLocation: { top: 100, left: 100 },
+    size: { width: 384, height: 400 },
+    location: { top: 0, left: 0 },
     zIndex: 100,
     isOpen: false,
     isLoading: false,
@@ -60,9 +58,7 @@ const initialState = {
     isMinimized: false,
     isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 350, height: 500 },
-    location: { top: 100, left: 100 },
-    prevLocation: { top: 100, left: 100 },
+    location: { top: 0, left: 0 },
     zIndex: 100,
     isOpen: false,
     isLoading: false,
@@ -76,9 +72,7 @@ const initialState = {
     isMinimized: false,
     isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 350, height: 500 },
-    location: { top: 100, left: 100 },
-    prevLocation: { top: 100, left: 100 },
+    location: { top: 0, left: 0 },
     zIndex: 100,
     isOpen: false,
     isLoading: false,
@@ -92,9 +86,7 @@ const initialState = {
     isMinimized: false,
     isMaximized: true,
     size: { width: 384, height: 400 },
-    prevSize: { width: 350, height: 500 },
-    location: { top: 100, left: 100 },
-    prevLocation: { top: 100, left: 100 },
+    location: { top: 0, left: 0 },
     zIndex: 100,
     isOpen: false,
     isLoading: false,
@@ -138,6 +130,8 @@ const reducer = createReducer(initialState, {
       if (typeof program === 'object') {
         program.isOpen = false;
         program.isMinimized = false;
+        program.isMaximized = true;
+        program.location = { top: 0, left: 0 };
       }
     }
     return { ...programs };
@@ -156,8 +150,6 @@ const reducer = createReducer(initialState, {
     const programs = { ...state };
     programs[action.payload.target] = target;
     target.isMaximized = true;
-    target.prevSize = { ...target.size };
-    target.prevLocation = { ...target.location };
     return programs;
   },
 
@@ -166,8 +158,6 @@ const reducer = createReducer(initialState, {
     const programs = { ...state };
     programs[action.payload.target] = target;
     target.isMaximized = false;
-    target.size = { ...target.prevSize };
-    target.location = { ...target.prevLocation };
     return programs;
   },
 

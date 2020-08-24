@@ -57,6 +57,7 @@ const StyledProgramContent = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
+  min-width: 300px;
 `;
 
 const StyledProgramTitle = styled.div`
@@ -103,10 +104,12 @@ const ProgramBox = ({
   const isMobileView = size.width < 764;
   const [nextTop, setNextTop] = useState(location.top);
   const [nextLeft, setNextLeft] = useState(location.left);
-
+  const [nextWidth, setNextWidth] = useState(size.width);
+  const [nextHeight, setNextHeight] = useState(size.height);
   const calMaximizedSize = ({ width, height }) => {
     return { width: width - 2, height: isMobile ? height : height - 60 };
   };
+  const maximizedSize = calMaximizedSize(windowSize);
 
   const calMoveX = (() => {
     let moveX = 0;
@@ -125,6 +128,10 @@ const ProgramBox = ({
       if (value === undefined) {
         return nextTop;
       }
+      if (topMax === undefined) {
+        nextTop = value;
+        return nextTop;
+      }
       moveTop += value;
       nextTop = minMaxOrValue(MINLOC_TOP, topMax, moveTop + currentTop);
       return nextTop;
@@ -138,17 +145,41 @@ const ProgramBox = ({
       if (value === undefined) {
         return nextLeft;
       }
+      if (LeftMax === undefined) {
+        nextLeft = value;
+        return nextLeft;
+      }
       moveLeft += value;
       nextLeft = minMaxOrValue(MINLOC_LEFT, LeftMax, moveLeft + currentLeft);
       return nextLeft;
     };
   })();
 
+  const calNextWidth = (() => {
+    let nextWidth = 0;
+    return value => {
+      if (value !== undefined) {
+        nextWidth = value;
+      }
+      return nextWidth;
+    };
+  })();
+
+  const calNextHeight = (() => {
+    let nextHeight = 0;
+    return value => {
+      if (value !== undefined) {
+        nextHeight = value;
+      }
+      return nextHeight;
+    };
+  })();
+
   const divStyle = {
     position: 'absolute',
-    transform: `translate(${nextLeft}px, ${nextTop}px)`,
-    width: size.width,
-    height: size.height,
+    transform: isMaximized ? `translate(0px, 0px)` : `translate(${nextLeft}px, ${nextTop}px)`,
+    width: isMaximized ? maximizedSize.width : nextWidth,
+    height: isMaximized ? maximizedSize.height : nextHeight,
     minWidth: '200px',
     minHeight: '30px',
     border: isMaximized ? 'none' : '5px solid rgba(0, 0, 0, 0)',
@@ -161,18 +192,19 @@ const ProgramBox = ({
   };
 
   useEffect(() => {
-    const maximizedSize = calMaximizedSize(windowSize);
     const currentSize = {
-      width: boxRef.current.scrollWidth,
-      height: boxRef.current.scrollHeight,
+      width: nextWidth,
+      height: nextHeight,
     };
 
-    const calSize = calSizeWhenWindowResize({ maximizedSize, size, isMaximized });
+    const calSize = calSizeWhenWindowResize({ maximizedSize, size });
     if (calSize) {
       changeWindowSize({
         size: calSize,
         target: type,
       });
+      setNextWidth(calSize.width);
+      setNextHeight(calSize.height);
     }
 
     const calLocation = calLocationWhenWindowResize({ maximizedSize, currentSize, location });
@@ -181,24 +213,10 @@ const ProgramBox = ({
         location: calLocation,
         target: type,
       });
+      setNextTop(calLocation.top);
+      setNextLeft(calLocation.left);
     }
   }, [windowSize]);
-
-  useEffect(() => {
-    if (isMaximized) {
-      const fullSize = calMaximizedSize(windowSize);
-      const startPoint = { top: 0, left: 0 };
-
-      changeWindowSize({
-        size: fullSize,
-        target: type,
-      });
-      changeWindowLocation({
-        location: startPoint,
-        target: type,
-      });
-    }
-  }, [isMaximized, isMinimized]);
 
   const addDragEvt = e => {
     document.addEventListener('mouseup', removeDragEvt);
@@ -212,10 +230,9 @@ const ProgramBox = ({
   };
 
   const dragEvt = e => {
-    const { height: maxHeight, width: maxWidth } = calMaximizedSize(windowSize);
+    const { height: maxHeight, width: maxWidth } = maximizedSize;
     let topMax = maxHeight - boxRef.current.scrollHeight;
     let leftMax = maxWidth - boxRef.current.scrollWidth;
-    console.log(e.movementY, topMax, location.top);
     setNextTop(calNextTop(e.movementY, topMax, location.top));
     setNextLeft(calNextLeft(e.movementX, leftMax, location.left));
   };
@@ -228,6 +245,11 @@ const ProgramBox = ({
   };
 
   const removeResizeEvt = () => {
+    changeWindowSize({
+      size: { width: calNextWidth(), height: calNextHeight() },
+      target: type,
+    });
+    changeWindowLocation({ location: { top: calNextTop(), left: calNextLeft() }, target: type });
     document.removeEventListener('mouseup', removeResizeEvt);
     document.removeEventListener('mousemove', resizeEvt);
     document.body.style.cursor = 'default';
@@ -249,18 +271,17 @@ const ProgramBox = ({
       currentSize,
     });
 
-    changeWindowSize({
-      size: nextSize,
-      target: type,
-    });
+    setNextWidth(calNextWidth(nextSize.width));
+    setNextHeight(calNextHeight(nextSize.height));
 
-    const nextLocation = calLocationWhenResizing({ movement, currentLocation, location, resizeMode });
-    if (nextLocation) {
-      changeWindowLocation({
-        location: nextLocation,
-        target: type,
-      });
+    let nextLocation = calLocationWhenResizing({ movement, currentLocation, location, resizeMode });
+
+    if (!nextLocation) {
+      nextLocation = { ...location };
     }
+
+    setNextTop(calNextTop(nextLocation.top));
+    setNextLeft(calNextLeft(nextLocation.left));
   };
 
   const changeResizeMode = e => {

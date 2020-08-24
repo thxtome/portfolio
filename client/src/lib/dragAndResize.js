@@ -8,16 +8,11 @@ const minMaxOrValue = (min, max, value) => {
 const calSizeWhenWindowResize = ({
   maximizedSize: { width: maxWidth, height: maxHeight },
   size: { width: prevWidth, height: prevHeight },
-  isMaximized,
 }) => {
-  if (isMaximized) {
-    return { width: maxWidth, height: maxHeight };
-  }
-
   if (maxHeight < prevHeight || maxWidth < prevWidth) {
     return {
-      width: maxWidth < prevWidth ? maxWidth : prevWidth,
-      height: maxHeight < prevHeight ? maxHeight : prevHeight,
+      width: minMaxOrValue(320, maxWidth, prevWidth),
+      height: minMaxOrValue(30, maxHeight, prevHeight),
     };
   }
 
@@ -25,18 +20,18 @@ const calSizeWhenWindowResize = ({
 };
 
 const calLocationWhenWindowResize = ({
-  maximizedSize: { maxWidth, maxHeight },
-  currentSize: { currentWidth, currentHeight },
+  maximizedSize: { width: maxWidth, height: maxHeight },
+  currentSize: { width: currentWidth, height: currentHeight },
   location: { top, left },
 }) => {
   let restTop = maxHeight - currentHeight;
   let restLeft = maxWidth - currentWidth;
-
   if (restTop < top || restLeft < left) {
     let nextTop = minMaxOrValue(0, top, restTop);
     let nextLeft = minMaxOrValue(0, left, restLeft);
     return { top: nextTop, left: nextLeft };
   }
+
   return null;
 };
 

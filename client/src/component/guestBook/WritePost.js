@@ -139,6 +139,7 @@ const Post = ({
             fontSize={'0.9rem'}
             fontWeight={'bold'}
             onchange={nickname.onChange}
+            autoComplete={'off'}
             maxLength={10}
           />
         </StyledTextBox>

@@ -292,6 +292,7 @@ const Post = ({
               color={'black'}
               fontSize={'0.8rem'}
               type={'password'}
+              autoComplete={'off'}
               onchange={password.onChange}
             ></InputText>
             <Button

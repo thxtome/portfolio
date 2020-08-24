@@ -115,11 +115,14 @@ const Post = ({
   ];
 
   useEffect(() => {
+    if (!isAddingPostSucceed && !isAddingPostFailed) {
+      return;
+    }
+
     if (isAddingPostSucceed) {
       clearPostInputs(formRef, postInputs);
       addToast({ text: '방명록을 등록했습니다.', type: 'info' });
-    }
-    if (isAddingPostFailed) {
+    } else {
       addToast({ text: '방명록 등록에 오류가 발생했습니다.', type: 'error' });
     }
     closeLoadingClock();

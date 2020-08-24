@@ -15,7 +15,7 @@ import {
 } from '../../lib/dragAndResize.js';
 
 const StyledIsLoading = styled.div`
-  width: calc(100% - 15px);
+  width: 100%;
   min-height: calc(100% - 30px);
   background: #000;
   opacity: 0.6;
@@ -175,6 +175,24 @@ const ProgramBox = ({
     };
   })();
 
+  const changeWindowSizeTotal = ({ width, height }) => {
+    changeWindowSize({
+      size: { width, height },
+      target: type,
+    });
+    setNextWidth(width);
+    setNextHeight(height);
+  };
+
+  const changeWindowLocationTotal = ({ top, left }) => {
+    changeWindowLocation({
+      location: { top, left },
+      target: type,
+    });
+    setNextTop(top);
+    setNextLeft(left);
+  };
+
   const divStyle = {
     position: 'absolute',
     transform: isMaximized ? `translate(0px, 0px)` : `translate(${nextLeft}px, ${nextTop}px)`,
@@ -199,22 +217,12 @@ const ProgramBox = ({
 
     const calSize = calSizeWhenWindowResize({ maximizedSize, size });
     if (calSize) {
-      changeWindowSize({
-        size: calSize,
-        target: type,
-      });
-      setNextWidth(calSize.width);
-      setNextHeight(calSize.height);
+      changeWindowSizeTotal(calSize);
     }
 
     const calLocation = calLocationWhenWindowResize({ maximizedSize, currentSize, location });
     if (calLocation) {
-      changeWindowLocation({
-        location: calLocation,
-        target: type,
-      });
-      setNextTop(calLocation.top);
-      setNextLeft(calLocation.left);
+      changeWindowLocationTotal(calLocation);
     }
   }, [windowSize]);
 

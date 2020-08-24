@@ -113,8 +113,9 @@ const Contact = ({
   refs,
   sendContactMessage,
   isSendMessageSucceed,
+  isSendMessageFailed,
   addToast,
-  ClearMessageSendSucceed,
+  ClearMessageSendResult,
   openLoadingClock,
   closeLoadingClock,
 }) => {
@@ -132,13 +133,26 @@ const Contact = ({
   ];
 
   useEffect(() => {
-    if (isSendMessageSucceed) {
-      ClearMessageSendSucceed();
-      addToast({ text: '메세지를 전송하였습니다.', type: 'info' });
-      clearMessageInputs(formRef, messageInputs);
-      closeLoadingClock();
+    if (!isSendMessageSucceed && !isSendMessageFailed) {
+      return;
     }
-  }, [isSendMessageSucceed]);
+
+    let message;
+    let type;
+    if (isSendMessageSucceed) {
+      message = '메세지를 전송하였습니다.';
+      type = 'info';
+    }
+    if (isSendMessageFailed) {
+      message = '메세지 전송에 실패했습니다.';
+      type = 'error';
+    }
+
+    ClearMessageSendResult();
+    addToast({ text: message, type });
+    clearMessageInputs(formRef, messageInputs);
+    closeLoadingClock();
+  }, [isSendMessageSucceed, isSendMessageFailed]);
 
   return (
     <StyledContentSection isMobileView={isMobileView} ref={refs}>

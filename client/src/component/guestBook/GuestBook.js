@@ -57,7 +57,7 @@ const StyledHr = styled.hr`
 const GuestBook = ({ isMobileView }) => {
   const [isRequiredLoad, setIsRequiredLoad] = useState(false);
   const handleScroll = e => {
-    if (e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 350) {
+    if (e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight < 450) {
       if (!isRequiredLoad) {
         setIsRequiredLoad(true);
       }

@@ -296,7 +296,7 @@ const Post = ({
             ></InputText>
             <Button
               text={'입력'}
-              width={'45px'}
+              width={'50px'}
               height={'80%'}
               background={'rgb(85, 169, 255)'}
               fontSize={'0.8rem'}

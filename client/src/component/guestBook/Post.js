@@ -94,13 +94,6 @@ const useInput = initVal => {
   return { value, onChange, clearValue, changeValue };
 };
 
-const clearPostInputs = (formRef, postInputs) => {
-  formRef.current.reset();
-  postInputs.forEach(({ input }) => {
-    input.clearValue();
-  });
-};
-
 const postVaildTest = (postInputs, addToast) => {
   return vaildDispacher(
     postInputs.map(input => {
@@ -298,11 +291,12 @@ const Post = ({
               height={'20px'}
               color={'black'}
               fontSize={'0.8rem'}
+              type={'password'}
               onchange={password.onChange}
             ></InputText>
             <Button
               text={'입력'}
-              width={'40px'}
+              width={'45px'}
               height={'80%'}
               background={'rgb(85, 169, 255)'}
               fontSize={'0.8rem'}

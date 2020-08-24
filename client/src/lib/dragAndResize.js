@@ -11,8 +11,8 @@ const calSizeWhenWindowResize = ({
 }) => {
   if (maxHeight < prevHeight || maxWidth < prevWidth) {
     return {
-      width: minMaxOrValue(320, maxWidth, prevWidth),
-      height: minMaxOrValue(30, maxHeight, prevHeight),
+      width: minMaxOrValue(MIN_WIDTH, maxWidth, prevWidth),
+      height: minMaxOrValue(MIN_HEIGHT, maxHeight, prevHeight),
     };
   }
 
@@ -141,6 +141,8 @@ const calLocationWhenResizing = ({
 
   return null;
 };
+
+
 
 export {
   minMaxOrValue,

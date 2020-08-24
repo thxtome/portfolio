@@ -101,6 +101,8 @@ const ProgramBox = ({
   const [resizeMode, setResizeMode] = useState('default');
   const [isResizing, setIsResizing] = useState(false);
   const isMobileView = size.width < 764;
+  const [x, setX] = useState(location.left);
+  const [y, setY] = useState(location.top);
 
   const calMaximizedSize = ({ width, height }) => {
     return { width: width - 2, height: isMobile ? height : height - 60 };
@@ -118,7 +120,7 @@ const ProgramBox = ({
 
   const divStyle = {
     position: 'absolute',
-    transform: `translate(${location.left}px, ${location.top}px)`,
+    transform: `translate(${x}px, ${y}px)`,
     width: size.width,
     height: size.height,
     minWidth: '200px',
@@ -178,6 +180,7 @@ const ProgramBox = ({
   };
 
   const removeDragEvt = () => {
+    changeWindowLocation({ location: { top: y, left: x }, target: type });
     document.removeEventListener('mouseup', removeDragEvt);
     document.removeEventListener('mousemove', dragEvt);
   };
@@ -189,12 +192,13 @@ const ProgramBox = ({
 
     let moveX = calMoveX(e.movementX);
     let moveY = calMoveY(e.movementY);
-
     let nextTop = location.top + moveY;
     let nextLeft = location.left + moveX;
     nextTop = minMaxOrValue(MINLOC_TOP, topMax, nextTop);
     nextLeft = minMaxOrValue(MINLOC_LEFT, leftMax, nextLeft);
-    changeWindowLocation({ location: { top: nextTop, left: nextLeft }, target: type });
+    setX(nextLeft);
+    setY(nextTop);
+    // changeWindowLocation({ location: { top: nextTop, left: nextLeft }, target: type });
   };
 
   const addResizeEvt = e => {

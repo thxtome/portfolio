@@ -13,6 +13,7 @@ const CHANGE_WINDOW_LOCATION = createAction('CHANGE_WINDOW_LOCATION');
 const CHANGE_WINDOW_SIZE = createAction('CHANGE_WINDOW_SIZE');
 const OPEN_PROGRAM = createAction('OPEN_PROGRAM');
 const CLOSE_PROGRAM = createAction('CLOSE_PROGRAM');
+const CLOSE_ALL_PROGRAM = createAction('CLOSE_ALL_PROGRAM');
 const MINIMIZE_PROGRAM = createAction('MINIMIZE_PROGRAM');
 const MAXIMIZE_PROGRAM = createAction('MAXIMIZE_PROGRAM');
 const RELEASE_MAXIMIZE_PROGRAM = createAction('RELEASE_MAXIMIZE_PROGRAM');
@@ -25,6 +26,7 @@ export const programActions = {
   CHANGE_WINDOW_SIZE,
   OPEN_PROGRAM,
   CLOSE_PROGRAM,
+  CLOSE_ALL_PROGRAM,
   MINIMIZE_PROGRAM,
   MAXIMIZE_PROGRAM,
   RELEASE_MAXIMIZE_PROGRAM,
@@ -127,6 +129,18 @@ const reducer = createReducer(initialState, {
     target.isOpen = false;
     target.isMinimized = false;
     return programs;
+  },
+
+  [CLOSE_ALL_PROGRAM]: (state, action) => {
+    const programs = _.cloneDeep(state);
+    for (let key in programs) {
+      let program = programs[key];
+      if (typeof program === 'object') {
+        program.isOpen = false;
+        program.isMinimized = false;
+      }
+    }
+    return { ...programs };
   },
 
   [MINIMIZE_PROGRAM]: (state, action) => {

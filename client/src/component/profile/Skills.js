@@ -87,6 +87,7 @@ const StyledSkillsTitle = styled.div`
   padding: 0 10px 10px 10px;
 `;
 
+
 const frontEnd = [
   { icon: HtmlIcon, title: 'HTML', text: '시맨틱 태그를 이해하고 레이아웃을 구성할 수 있습니다.' },
   { icon: CssIcon, title: 'CSS', text: '반응형 웹을 구현할 수 있습니다.' },

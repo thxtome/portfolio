@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import PowerOn from "./PowerOn";
-import PowerOff from "./PowerOff";
-import PowerSaving from "./PowerSaving";
-import PowerSelect from "./PowerSelect";
-import { POWER_STATE } from "../../store/module/power";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import PowerOn from './PowerOn';
+import PowerOff from './PowerOff';
+import PowerSaving from './PowerSaving';
+import PowerSelect from './PowerSelect';
+import { POWER_STATE } from '../../store/module/power';
 
 const StyledPowerScreen = styled.div`
   width: 100%;
@@ -35,14 +35,18 @@ const renderSwitch = (powerState, unmountPowerScreen, changePowerState) => {
   }
 };
 
-function PowerScreen({ isRequiredPowerScreen, powerState, unmountPowerScreen, changePowerState }) {
-  useEffect(() => {}, [powerState]);
+function PowerScreen({ isRequiredPowerScreen, powerState, unmountPowerScreen, changePowerState, closeAllPrograms }) {
+  useEffect(() => {
+    if (powerState === POWER_STATE.off || powerState === POWER_STATE.restart) {
+      closeAllPrograms();
+    }
+  }, [powerState]);
   return (
     <>
       {isRequiredPowerScreen ? (
         <StyledPowerScreen>{renderSwitch(powerState, unmountPowerScreen, changePowerState)}</StyledPowerScreen>
       ) : (
-        ""
+        ''
       )}
     </>
   );

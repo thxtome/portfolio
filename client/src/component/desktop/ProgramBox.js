@@ -101,8 +101,8 @@ const ProgramBox = ({
   const [resizeMode, setResizeMode] = useState('default');
   const [isResizing, setIsResizing] = useState(false);
   const isMobileView = size.width < 764;
-  const [x, setX] = useState(location.left);
-  const [y, setY] = useState(location.top);
+  const [nextTop, setNextTop] = useState(location.top);
+  const [nextLeft, setNextLeft] = useState(location.left);
 
   const calMaximizedSize = ({ width, height }) => {
     return { width: width - 2, height: isMobile ? height : height - 60 };
@@ -118,9 +118,35 @@ const ProgramBox = ({
     return value => (moveY += value);
   })();
 
+  const calNextTop = (() => {
+    let moveTop = 0;
+    let nextTop = 0;
+    return (value, topMax, currentTop) => {
+      if (value === undefined) {
+        return nextTop;
+      }
+      moveTop += value;
+      nextTop = minMaxOrValue(MINLOC_TOP, topMax, moveTop + currentTop);
+      return nextTop;
+    };
+  })();
+
+  const calNextLeft = (() => {
+    let moveLeft = 0;
+    let nextLeft = 0;
+    return (value, LeftMax, currentLeft) => {
+      if (value === undefined) {
+        return nextLeft;
+      }
+      moveLeft += value;
+      nextLeft = minMaxOrValue(MINLOC_LEFT, LeftMax, moveLeft + currentLeft);
+      return nextLeft;
+    };
+  })();
+
   const divStyle = {
     position: 'absolute',
-    transform: `translate(${x}px, ${y}px)`,
+    transform: `translate(${nextLeft}px, ${nextTop}px)`,
     width: size.width,
     height: size.height,
     minWidth: '200px',
@@ -180,7 +206,7 @@ const ProgramBox = ({
   };
 
   const removeDragEvt = () => {
-    changeWindowLocation({ location: { top: y, left: x }, target: type });
+    changeWindowLocation({ location: { top: calNextTop(), left: calNextLeft() }, target: type });
     document.removeEventListener('mouseup', removeDragEvt);
     document.removeEventListener('mousemove', dragEvt);
   };
@@ -189,16 +215,9 @@ const ProgramBox = ({
     const { height: maxHeight, width: maxWidth } = calMaximizedSize(windowSize);
     let topMax = maxHeight - boxRef.current.scrollHeight;
     let leftMax = maxWidth - boxRef.current.scrollWidth;
-
-    let moveX = calMoveX(e.movementX);
-    let moveY = calMoveY(e.movementY);
-    let nextTop = location.top + moveY;
-    let nextLeft = location.left + moveX;
-    nextTop = minMaxOrValue(MINLOC_TOP, topMax, nextTop);
-    nextLeft = minMaxOrValue(MINLOC_LEFT, leftMax, nextLeft);
-    setX(nextLeft);
-    setY(nextTop);
-    // changeWindowLocation({ location: { top: nextTop, left: nextLeft }, target: type });
+    console.log(e.movementY, topMax, location.top);
+    setNextTop(calNextTop(e.movementY, topMax, location.top));
+    setNextLeft(calNextLeft(e.movementX, leftMax, location.left));
   };
 
   const addResizeEvt = e => {

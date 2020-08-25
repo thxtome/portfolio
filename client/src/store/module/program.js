@@ -50,6 +50,7 @@ const initialState = {
     zIndex: 100,
     isOpen: false,
     isLoading: false,
+    onDesktop: false,
     Content: Profile,
   },
   project: {
@@ -64,6 +65,7 @@ const initialState = {
     zIndex: 100,
     isOpen: false,
     isLoading: false,
+    onDesktop: false,
     Content: Project,
   },
   blog: {
@@ -78,6 +80,7 @@ const initialState = {
     zIndex: 100,
     isOpen: false,
     isLoading: false,
+    onDesktop: false,
     Content: Blog,
   },
   guestBook: {
@@ -92,6 +95,7 @@ const initialState = {
     zIndex: 100,
     isOpen: false,
     isLoading: false,
+    onDesktop: false,
     Content: GuestBook,
   },
   maxZindex: 100,
@@ -146,15 +150,41 @@ const reducer = createReducer(initialState, {
     target.isMinimized = true;
     return programs;
   },
-  
+
   [MINIMIZE_ALL_PROGRAM]: (state, action) => {
     const programs = _.cloneDeep(state);
-    for (let key in programs) {
-      let program = programs[key];
-      if (typeof program === 'object') {
-        program.isMinimized = true;
+    let isNoOneOnDesktop = Object.values(programs).reduce((acc, program) => {
+      if (typeof program === 'object' && program.isOpen) {
+        return acc && program.isMinimized ? true : false;
+      }
+      return acc;
+    }, true);
+
+    if (isNoOneOnDesktop) {
+      for (let key in programs) {
+        let program = programs[key];
+        if (typeof program !== 'object') {
+          continue;
+        }
+        if (program.onDesktop) {
+          program.isMinimized = false;
+          program.onDesktop = false;
+        }
+      }
+    } else {
+      for (let key in programs) {
+        let program = programs[key];
+        if (typeof program !== 'object') {
+          continue;
+        }
+        program.onDesktop = false;
+        if (!program.isMinimized) {
+          program.isMinimized = true;
+          program.onDesktop = true;
+        }
       }
     }
+
     return { ...programs };
   },
 

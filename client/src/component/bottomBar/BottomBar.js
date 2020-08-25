@@ -13,7 +13,7 @@ const StyledBottomBar = styled.footer`
   bottom: 0px;
   display: flex;
   justify-content: space-between;
-  min-width: 450px;
+  min-width: 320px;
   z-index: 1000000;
 `;
 
@@ -68,7 +68,7 @@ function BottomBar({ programs, closeBottomMenu, openWindow, goToDesktop }) {
         </StyledBottomCalendarBox>
       )}
       <StyledBottomGoDesktopBox>
-        <Button onclick={goToDesktop}></Button>
+        <Button onclick={goToDesktop} height={'100%'}></Button>
       </StyledBottomGoDesktopBox>
     </StyledBottomBar>
   );

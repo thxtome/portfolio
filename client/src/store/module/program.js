@@ -15,6 +15,7 @@ const OPEN_PROGRAM = createAction('OPEN_PROGRAM');
 const CLOSE_PROGRAM = createAction('CLOSE_PROGRAM');
 const CLOSE_ALL_PROGRAM = createAction('CLOSE_ALL_PROGRAM');
 const MINIMIZE_PROGRAM = createAction('MINIMIZE_PROGRAM');
+const MINIMIZE_ALL_PROGRAM = createAction('MINIMIZE_ALL_PROGRAM');
 const MAXIMIZE_PROGRAM = createAction('MAXIMIZE_PROGRAM');
 const RELEASE_MAXIMIZE_PROGRAM = createAction('RELEASE_MAXIMIZE_PROGRAM');
 const FOCUS_ON_WINDOW = createAction('FOCUS_ON_WINDOW');
@@ -28,6 +29,7 @@ export const programActions = {
   CLOSE_PROGRAM,
   CLOSE_ALL_PROGRAM,
   MINIMIZE_PROGRAM,
+  MINIMIZE_ALL_PROGRAM,
   MAXIMIZE_PROGRAM,
   RELEASE_MAXIMIZE_PROGRAM,
   FOCUS_ON_WINDOW,
@@ -143,6 +145,17 @@ const reducer = createReducer(initialState, {
     programs[action.payload.target] = target;
     target.isMinimized = true;
     return programs;
+  },
+  
+  [MINIMIZE_ALL_PROGRAM]: (state, action) => {
+    const programs = _.cloneDeep(state);
+    for (let key in programs) {
+      let program = programs[key];
+      if (typeof program === 'object') {
+        program.isMinimized = true;
+      }
+    }
+    return { ...programs };
   },
 
   [MAXIMIZE_PROGRAM]: (state, action) => {

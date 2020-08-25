@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import StartMenuContainer from "../../container/bottomBar/startMenu/StartMenuContainer";
-import CalendarMenuContainer from "../../container/bottomBar/calendarMenu/CalendarMenuContainer";
-import BottomBarItem from "./BottomBarItem";
-import isMobile from "../../lib/MobileDetect";
-
+import React from 'react';
+import styled from 'styled-components';
+import StartMenuContainer from '../../container/bottomBar/startMenu/StartMenuContainer';
+import CalendarMenuContainer from '../../container/bottomBar/calendarMenu/CalendarMenuContainer';
+import BottomBarItem from './BottomBarItem';
+import isMobile from '../../lib/MobileDetect';
+import Button from '../common/Button';
 const StyledBottomBar = styled.footer`
   position: fixed;
   width: 100%;
@@ -23,15 +23,28 @@ const StyledBottomIconBox = styled.div`
   display: grid;
   grid-template: 60px / repeat(auto-fill, 60px);
   min-width: 300px;
+  flex-grow: 1;
 `;
 
 const StyledBottomCalendarBox = styled.div`
-  min-width: 90px;
+  width: max-content;
   height: 60px;
   display: flex;
 `;
 
-function BottomBar({ programs, closeBottomMenu, openWindow }) {
+const StyledBottomGoDesktopBox = styled.div`
+  width: 12px;
+  min-width: 12px;
+  height: 60px;
+  display: flex;
+  cursor: pointer;
+  border-left: 1px solid #999;
+  &:hover {
+    background: #999;
+  }
+`;
+
+function BottomBar({ programs, closeBottomMenu, openWindow, goToDesktop }) {
   return (
     <StyledBottomBar>
       <StyledBottomIconBox>
@@ -48,12 +61,15 @@ function BottomBar({ programs, closeBottomMenu, openWindow }) {
         ))}
       </StyledBottomIconBox>
       {isMobile ? (
-        ""
+        ''
       ) : (
         <StyledBottomCalendarBox>
           <CalendarMenuContainer></CalendarMenuContainer>
         </StyledBottomCalendarBox>
       )}
+      <StyledBottomGoDesktopBox>
+        <Button onclick={goToDesktop}></Button>
+      </StyledBottomGoDesktopBox>
     </StyledBottomBar>
   );
 }

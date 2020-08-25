@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledCalendarBtn = styled.div`
-  width: 90px;
+  width: 95px;
   height: 100%;
   display: flex;
   justify-content: center;
